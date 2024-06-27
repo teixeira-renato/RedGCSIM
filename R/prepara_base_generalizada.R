@@ -6,7 +6,7 @@
 #'
 #' @export
 
-prepara_base_generalizada = function(base_dados_completos, dados_municipios, dados_pop){
+prepara_base_generalizada = function(base_dados_completos){
   `%notin%` <- Negate(`%in%`)
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse,rio) # pacotes necessários
