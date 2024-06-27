@@ -17,7 +17,7 @@ tabela_final_1 = function(x){
   pacman::p_load(tidyverse,rio) # pacotes necessários
 
   ###Arquivo com as categoria das causas e os CID
-  causas <- RedGCSIM::mumime
+  causas <- RedGCSIM::ICD
   colnames(causas)[1] <- 'CAUSABAS'
 
   ###Merge Causas GBD
