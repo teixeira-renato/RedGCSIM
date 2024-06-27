@@ -1,12 +1,12 @@
-#' separa_reg_ign
+#' separa_reg_completos
 #'
-#' Carregar as bases de dados do SIM.
+#' Retorna dados completos, sem ignorados.
 #'
 #' @param x, padrao vetor de números.
 #'
 #' @export
 
-separa_reg_ign = function(x){
+separa_reg_completos = function(x){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse) # pacotes necessári
   `%notin%` <- Negate(`%in%`)
@@ -32,7 +32,7 @@ separa_reg_ign = function(x){
 
   if ((sum(nrow(dados_completos),nrow(ign)))==nrow(x)) print("Todos os registros estão separados nas bases de ignorados ou dados completos")
 
-  out.file <- list(ign,dados_completos)
+  #out.file <- list(ign,dados_completos)
 
-  return(ign)
+  return(dados_completos)
 }

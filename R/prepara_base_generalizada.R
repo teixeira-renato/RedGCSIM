@@ -40,7 +40,7 @@ prepara_base_generalizada = function(base_dados_completos, dados_municipios, dad
 
   #Codigo de municipio
 
-  mumime <- import(dados_municipios,encoding = 'Latin-1')
+  mumime <- RedGCSIM::mumime
   mumime <- mumime %>%
     select(municode.6, microcode, mesocode)
   colnames(mumime) <- c('cdmun','micro', 'meso')
