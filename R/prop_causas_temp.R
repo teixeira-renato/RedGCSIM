@@ -7,6 +7,7 @@
 #' @export
 
 prop_causas_temp = function(dados){
+
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse, dtplyr) # pacotes necessários
 
@@ -59,6 +60,8 @@ prop_causas_temp = function(dados){
     mutate(pmu.t=pop/sum(pop)) %>%
     ungroup()%>%
     as_tibble()
+
   gc()
+
   return(base.2)
-}
+  }
