@@ -2,13 +2,23 @@
 % Please edit documentation in R/padroniza_idade.R
 \name{padroniza_idade}
 \alias{padroniza_idade}
-\title{padroniza_idade}
+\title{Padroniza Idade}
 \usage{
-padroniza_idade(x, caminho_arq_idade)
+padroniza_idade(x)
 }
 \arguments{
-\item{x, caminho_arq_idade, }{padrao vetor de números.}
+\item{x}{Um data frame contendo dados a serem padronizados.}
+}
+\value{
+Um data frame com idades padronizadas.
 }
 \description{
-Padroniza a idade de acordo com as faixas etárias utilizadas no script.
+Esta função padroniza as idades no formato padrão do SIM em faixas etárias quinquenais.
+}
+\examples{
+\dontrun{
+# Exemplo de uso:
+dados <- data.frame(IDADE = c("001", "002", "090", NA))
+dados_padronizados <- padroniza_idade(dados)
+}
 }

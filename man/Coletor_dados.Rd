@@ -2,13 +2,28 @@
 % Please edit documentation in R/Coletor_dados.R
 \name{Coletor_dados}
 \alias{Coletor_dados}
-\title{Coletor_dados}
+\title{Coletor de Dados}
 \usage{
 Coletor_dados(caminho, padrao)
 }
 \arguments{
-\item{caminho, }{padrao vetor de números.}
+\item{caminho}{O caminho para o diretório contendo os arquivos.}
+
+\item{padrao}{Um padrão de expressão regular para selecionar os arquivos.}
+}
+\value{
+Um data frame combinado de todos os arquivos que correspondem ao padrão.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função coleta e combina dados do SIM de arquivos em um diretório especificado.
+Os arquivos podem ser em DBF e DBC.
+Deve-se inserir aspas nos dois parâmetros.
+}
+\examples{
+\dontrun{
+# Exemplo de uso:
+caminho <- "caminho/para/seus/arquivos"
+padrao <- "\\\\.csv$"
+dados <- Coletor_dados(caminho, padrao)
+}
 }

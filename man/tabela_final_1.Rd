@@ -4,11 +4,21 @@
 \alias{tabela_final_1}
 \title{tabela_final_1}
 \usage{
-tabela_final_1(x, arq_ICD_map, arq_regioes)
+tabela_final_1(x)
 }
 \arguments{
-\item{x, arq_ICD_map, arq_regioes, }{padrao vetor de números.}
+\item{x, }{padrao vetor de números.}
+}
+\value{
+Um data frame com os municípios, regionais de saúde, estados e grandes regiões.
 }
 \description{
 Carregar as bases de dados do SIM.
+}
+\examples{
+\dontrun{
+# Exemplo de uso:
+dados <- data.frame(out.line2)
+dados_municipios <- tabela_final_1(dados)
+}
 }

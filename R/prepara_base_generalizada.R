@@ -2,7 +2,7 @@
 #'
 #' Carregar as bases de dados do SIM.
 #'
-#' @param base_dados_completos,dados_municipios,dados_pop, padrao vetor de números.
+#' @param base_dados_completos padrao vetor de números.
 #'
 #' @export
 

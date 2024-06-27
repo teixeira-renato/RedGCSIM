@@ -1,4 +1,4 @@
-#' separa_reg_ign
+#' separa_reg_ing
 #'
 #' Carregar as bases de dados do SIM.
 #'

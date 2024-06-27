@@ -2,13 +2,28 @@
 % Please edit documentation in R/padroniza_local.R
 \name{padroniza_local}
 \alias{padroniza_local}
-\title{padroniza_local}
+\title{Padroniza Local}
 \usage{
 padroniza_local(x)
 }
 \arguments{
-\item{x, }{padrao vetor de números.}
+\item{x}{Um data frame contendo dados a serem padronizados.}
+}
+\value{
+Um data frame com as colunas \code{cdmun}, \code{SEXO}, \code{CAUSABAS}, \code{age}, \code{idade.cat} e \code{ano}.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função padroniza informações de local e ano em um conjunto de dados.
+}
+\examples{
+\dontrun{
+# Exemplo de uso:
+dados <- data.frame(DTOBITO = c("20230615", "20221230"),
+                    CODMUNRES = c("1234567", "2345678"),
+                    SEXO = c("M", "F"),
+                    CAUSABAS = c("A00", "B00"),
+                    age = c(30, 25),
+                    idade.cat = c("25-29", "20-24"))
+dados_padronizados <- padroniza_local(dados)
+}
 }
