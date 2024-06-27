@@ -34,5 +34,5 @@ separa_reg_ing = function(x){
 
   out.file <- list(ign,dados_completos)
 
-  return(ign)
+  return(out.file)
 }
