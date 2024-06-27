@@ -10,7 +10,7 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse,rio) # pacotes necessários
 
-  ICD_pesos <- import(pesos, sheet = 2)
+  ICD_pesos <- RedGCSIM::ICD_pesos
 
   causas <- c( "Injuries - Falls"    , "_pneumo",
                "Injuries - Homicide" , "Injuries - Others"  ,
