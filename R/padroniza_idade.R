@@ -1,28 +1,25 @@
-#' padroniza_idade
+#' Padroniza Idade
 #'
-#' Padroniza a idade de acordo com as faixas etárias utilizadas no script.
+#' Esta função padroniza as idades no formato padrão do SIM em faixas etárias quinquenais.
 #'
-#' @param x,caminho_arq_idade, padrao vetor de números.
-#'
+#' @param x Um data frame contendo dados a serem padronizados.
+#' @return Um data frame com idades padronizadas.
+#' @examples
+#' \dontrun{
+#' # Exemplo de uso:
+#' dados <- data.frame(IDADE = c("001", "002", "090", NA))
+#' caminho_arq_idade <- "caminho/para/arquivo_de_idade.csv"
+#' dados_padronizados <- padroniza_idade(dados, caminho_arq_idade)
+#' }
 #' @export
 
 padroniza_idade = function(x,caminho_arq_idade){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse,rio) # pacotes necessários
 
-  ###Função para criar os grupos de idades
-  age.cat = function(age){
-    result = 5*(age %/% 5)
-    nove = age>=90
-    na =(is.na(age))
-    result[nove] = 90
-    result[na]= NA
-    return(result)
-  }
-
   #Base
   #arquivo com o código das idades no SIM
-  cod.idades <- import(caminho_arq_idade, colClasses="character")
+  cod.idades <- RedGCSIM::cod.idades
   cod.idades.2 <- cod.idades[,1:2]
 
   cod.idades.2 <- cod.idades.2 %>%
@@ -42,8 +39,5 @@ padroniza_idade = function(x,caminho_arq_idade){
     mutate(idade.cat=ifelse(grepl("^\\d{1}",perl = T,.$age),
                             age.cat(as.numeric(str_sub(age, end = -6))),.$age))
 
-  # conf=filter(out.file,is.na(idade.cat))
-  # if(nrow(conf)<1) print("Sem erros na categorização das idades") & rm(conf) else print("verificar categorização das idades") & View(conf)
-
-  return(out.file)
+   return(out.file)
 }
