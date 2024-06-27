@@ -6,7 +6,7 @@
 #'
 #' @export
 
-separa_reg_ign = function(x){
+separa_reg_ing = function(x){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse) # pacotes necessári
   `%notin%` <- Negate(`%in%`)
