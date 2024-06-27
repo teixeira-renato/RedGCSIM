@@ -8,12 +8,11 @@
 #' \dontrun{
 #' # Exemplo de uso:
 #' dados <- data.frame(IDADE = c("001", "002", "090", NA))
-#' caminho_arq_idade <- "caminho/para/arquivo_de_idade.csv"
-#' dados_padronizados <- padroniza_idade(dados, caminho_arq_idade)
+#' dados_padronizados <- padroniza_idade(dados)
 #' }
 #' @export
 
-padroniza_idade = function(x,caminho_arq_idade){
+padroniza_idade = function(x){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse,rio) # pacotes necessários
 
