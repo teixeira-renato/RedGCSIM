@@ -8,7 +8,7 @@
 
 prop_causas = function(dados){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse, dtplyr) # pacotes necessários
+  pacman::p_load(tidyverse, dtplyr, data.table) # pacotes necessários
 
   ####Município
   base.2 <- dados %>%
