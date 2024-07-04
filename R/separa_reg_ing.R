@@ -32,7 +32,7 @@ separa_reg_ing = function(x){
 
   if ((sum(nrow(dados_completos),nrow(ign)))==nrow(x)) print("Todos os registros estão separados nas bases de ignorados ou dados completos")
 
-  out.file <- list(ign,dados_completos)
+  out.file <- list(ignorados = ign, completos = dados_completos)
 
   return(out.file)
 }
