@@ -2,11 +2,11 @@
 #'
 #' Carregar as bases de dados do SIM.
 #'
-#' @param dados_sem_ign,dados_municipios, padrao vetor de números.
+#' @separam dados_sem_ign.
 #'
 #' @export
 
-separa_reg_GC = function (dados_sem_ign, dados_municipios){
+separa_reg_GC = function (dados_sem_ign){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse,rio) # pacotes necessários
 
