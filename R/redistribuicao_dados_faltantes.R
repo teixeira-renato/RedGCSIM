@@ -8,7 +8,7 @@
 
 redistribuicao_dados_faltantes = function(base_prop,dados_ign){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse, dtplyr) # pacotes necessários
+  pacman::p_load(tidyverse) # pacotes necessários
   
   `%notin%` <- Negate(`%in%`)
   
@@ -25,12 +25,10 @@ redistribuicao_dados_faltantes = function(base_prop,dados_ign){
     filter(idade=='IGN'& cdmun %notin% notwantedlevels & sexo!='IGN') %>% 
     select(-idade)
   
-  base.3 <- dtplyr::lazy_dt(base_prop)
-  ig.id <- dtplyr::lazy_dt(ig.id)
+  base.3 <- base_prop
+  ig.id <- ig.id
   
   base.3 <- left_join(base.3, ig.id, by=c('cdmun','micro', 'meso', 'uf', 'GBD', 'sexo', 'ano'))
-  base.3 <- as_tibble(base.3)
-  ig.id <- as_tibble(ig.id)
   
   base.3 <- mutate(base.3,id.1=ign*pr.mu.id,
                    ign.2=ifelse(is.na(id.1) & mu.id==0, ign,NA),
@@ -46,12 +44,8 @@ redistribuicao_dados_faltantes = function(base_prop,dados_ign){
                                         ifelse(!is.na(id.3), obitos+id.3,
                                                ifelse(!is.na(id.4), obitos+id.4,
                                                       ifelse(!is.na(id.5), obitos+id.5,obitos)))))) %>%
-    select(-ign,-ign.2, -ign.3, -ign.4, -ign.5)%>%
-    as_tibble()
-  
+    select(-ign,-ign.2, -ign.3, -ign.4, -ign.5)
   gc();gc()
-  
-  
   
   ###########Sem sexo 
   
