@@ -4,10 +4,7 @@
 \alias{separa_reg_GC}
 \title{separa_reg_GC}
 \usage{
-separa_reg_GC(dados_sem_ign, dados_municipios)
-}
-\arguments{
-\item{dados_sem_ign, dados_municipios, }{padrao vetor de números.}
+separa_reg_GC(dados_sem_ign)
 }
 \description{
 Carregar as bases de dados do SIM.
