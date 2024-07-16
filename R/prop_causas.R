@@ -12,7 +12,7 @@ prop_causas = function(dados){
 
   ####Município
   base.2 <- dados %>%
-    lazy_dt()%>%
+    dtplyr::lazy_dt()%>%
     group_by(cdmun,micro,meso, GBD, ano, sexo, uf) %>%
     mutate(mu.id=sum(obitos,na.rm = TRUE),
            pr.mu.id=obitos/sum(obitos,na.rm = TRUE)) %>%
@@ -63,7 +63,7 @@ prop_causas = function(dados){
 
   ###base.micro
   micro <- base.2 %>%
-    lazy_dt()%>%
+    dtplyr::lazy_dt()%>%
     group_by(micro,meso,idade, GBD, ano, sexo, uf) %>%
     summarise(ob=sum(obitos,na.rm = TRUE))%>%
     ungroup() %>%
@@ -86,7 +86,7 @@ prop_causas = function(dados){
   ###base.meso
 
   meso <- base.2 %>%
-    lazy_dt()%>%
+    dtplyr::lazy_dt()%>%
     group_by(meso,idade, GBD, ano, sexo, uf) %>%
     summarise(ob=sum(obitos,na.rm = TRUE))%>%
     ungroup() %>%
@@ -109,7 +109,7 @@ prop_causas = function(dados){
   ###base.uf
 
   uf <- base.2 %>%
-    lazy_dt()%>%
+    dtplyr::lazy_dt()%>%
     group_by(idade, GBD, ano, sexo, uf) %>%
     summarise(ob.uf=sum(obitos,na.rm = TRUE))%>%
     ungroup() %>%
