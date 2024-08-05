@@ -2,7 +2,7 @@
 #'
 #' Carregar as bases de dados do SIM.
 #'
-#' @separam dados_sem_ign.
+#' @param dados
 #'
 #' @export
 

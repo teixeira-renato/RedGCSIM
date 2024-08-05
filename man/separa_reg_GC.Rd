@@ -6,6 +6,9 @@
 \usage{
 separa_reg_GC(dados_sem_ign)
 }
+\arguments{
+\item{dados}{}
+}
 \description{
 Carregar as bases de dados do SIM.
 }
