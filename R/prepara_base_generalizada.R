@@ -59,7 +59,11 @@ prepara_base_generalizada = function(base_dados_completos){
   pop <- pop %>%
     filter(Ano%in%base_dados_completos$ano)
 
+<<<<<<< HEAD
   colnames(pop) <- c('ano', 'uf', 'sexo', 'cdmun.7', 'nome', as.character(seq(0,90,5)), 'total','Early Neonatal','Late Neonatal','Post Neonatal')
+=======
+  colnames(pop) <- c('ano', 'uf', 'sexo', 'cdmun.7', 'nome', as.character(seq(0,90,5)), "total","Early Neonatal","Late Neonatal","Post Neonatal" )
+>>>>>>> 0c05c58be80c77a0faa21dde41b23bcd42baf47e
 
   head(pop)
   cols <- variable.names(pop[,6:25])
