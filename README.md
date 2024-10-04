@@ -8,3 +8,11 @@ O trabalho continua em desenvolvimento e ao surgir novas versões o repositório
 Um pacote está em desenvolvimento e em breve novas atualizações poderão facilitar o uso do algoritmo para usuários finais.
 
 Sua ajuda é bem vinda para sugestões e identificações a serem implementadas.
+
+
+
+## Dicas de uso
+
+Para usar o pacote recomenda-se seguir os passos e funções descritas a seguir:
+
+1 - Carregar a base 
