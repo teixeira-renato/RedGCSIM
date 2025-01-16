@@ -1,16 +1,37 @@
-#' tabela_final_1
+#' Geração de Tabela Final com Dados do SIM
 #'
-#' Carregar as bases de dados do SIM.
+#' Esta função processa os dados do Sistema de Informações sobre Mortalidade (SIM), integrando informações de causas de óbitos, regiões administrativas e outras variáveis para produzir uma tabela consolidada.
 #'
-#' @param x, padrao vetor de números.
-#' @return Um data frame com os municípios, regionais de saúde, estados e grandes regiões.
+#' @param x Data frame contendo os dados do SIM, incluindo colunas como `CAUSABAS`, `SEXO`, `idade.cat`, `ano`, entre outras.
+#' @return Um data frame com informações agregadas por município, regionais de saúde, estados e grandes regiões, incluindo as seguintes colunas:
+#' \itemize{
+#'   \item `cdmun`: Código do município.
+#'   \item `micro`: Código da microrregião.
+#'   \item `meso`: Código da mesorregião.
+#'   \item `sexo`: Sexo reclassificado (Masculino, Feminino ou IGN).
+#'   \item `idade`: Categoria de idade, com valores ignorados marcados como 'IGN'.
+#'   \item `ano`: Ano dos óbitos.
+#'   \item `GBD`: Classificação Global Burden of Disease (GBD) das causas.
+#'   \item `obitos`: Número de óbitos agregados.
+#'   \item `uf`: Unidade Federativa correspondente ao município.
+#' }
 #' @examples
 #' \dontrun{
 #' # Exemplo de uso:
-#' dados <- data.frame(out.line2)
+#' dados <- data.frame(
+#'   CAUSABAS = c("A01", "B02"),
+#'   SEXO = c("1", "2"),
+#'   idade.cat = c("20-24", "25-29"),
+#'   ano = c(2020, 2021),
+#'   cdmun = c("110001", "120001")
+#' )
+#'
 #' dados_municipios <- tabela_final_1(dados)
+#' head(dados_municipios)
 #' }
 #' @export
+
+
 
 tabela_final_1 = function(x){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado

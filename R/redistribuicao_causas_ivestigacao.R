@@ -1,10 +1,44 @@
-#' redistribuicao_causas_ivestigacao
+#' Redistribuição de Causas por Investigação
 #'
-#' Carregar as bases de dados do SIM.
+#' Esta função redistribui causas de óbito classificadas como garbage (CG) nos dados do SIM,
+#' utilizando critérios específicos baseados em pesos e categorias predefinidas.
 #'
-#' @param dados_completos,dados_redis,pesos, padrao vetor de números.
+#' @param dados_completos Data frame contendo os dados completos, incluindo colunas como `cdmun`, `idade`, `sexo`, `ano`, e `GBD`.
+#' @param dados_redis Data frame contendo as causas garbage a serem redistribuídas, com as colunas necessárias para a redistribuição.
+#' @param pesos Data frame com os pesos de redistribuição associados às causas garbage e suas respectivas categorias.
+#' @return Um data frame com os dados redistribuídos, incluindo as novas colunas de redistribuição (`obitos.10`, `obitos.11`, `obitos.12`, etc.) e validações.
+#' @examples
+#' \dontrun{
+#' # Dados fictícios
+#' dados_completos <- data.frame(
+#'   cdmun = c("110001", "120001"),
+#'   idade = c("30", "25"),
+#'   sexo = c("Masculino", "Feminino"),
+#'   ano = c(2020, 2021),
+#'   GBD = c("Injuries - Falls", "materna_hemorragia"),
+#'   obitos = c(5, 10)
+#' )
 #'
+#' dados_redis <- data.frame(
+#'   cdmun = c("110001", "120001"),
+#'   idade = c("30", "25"),
+#'   sexo = c("Masculino", "Feminino"),
+#'   ano = c(2020, 2021),
+#'   c.red = c("_x59", "_pneumo"),
+#'   redis = c(1.2, 2.5)
+#' )
+#'
+#' pesos <- data.frame(
+#'   CG = c("_x59", "_pneumo"),
+#'   target = c("Injuries - Falls", "materna_hemorragia"),
+#'   weight = c(0.8, 1.5)
+#' )
+#'
+#' resultado <- redistribuicao_causas_ivestigacao(dados_completos, dados_redis, pesos)
+#' head(resultado)
+#' }
 #' @export
+
 
 redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado

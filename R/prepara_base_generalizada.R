@@ -1,9 +1,32 @@
-#' prepara_base_generalizada
+#' Prepara Base Generalizada
 #'
-#' Carregar as bases de dados do SIM.
+#' Esta função processa os dados completos do Sistema de Informações sobre Mortalidade (SIM),
+#' gerando uma base generalizada com dados populacionais agregados e ajustados.
 #'
-#' @param base_dados_completos padrao vetor de números.
+#' @param base_dados_completos Data frame contendo os dados completos do SIM,
+#'                             incluindo colunas como `cdmun`, `GBD`, `sexo`, `ano`, e `obitos`.
+#'                             Deve conter os dados necessários para processamento e análise.
+#' @return Um data frame com os dados completos e generalizados, incluindo:
+#' \itemize{
+#'   \item Dados de mortalidade ajustados.
+#'   \item Agregação de informações populacionais.
+#'   \item Dados com estrutura completa para redistribuição de causas garbage.
+#' }
+#' @examples
+#' \dontrun{
+#' # Exemplo de uso com dados fictícios
+#' base_dados_completos <- data.frame(
+#'   cdmun = c("110001", "120001"),
+#'   GBD = c("Injuries - Falls", "materna_hemorragia"),
+#'   sexo = c("Masculino", "Feminino"),
+#'   ano = c(2020, 2021),
+#'   obitos = c(5, 10),
+#'   idade = c("30", "25")
+#' )
 #'
+#' resultado <- prepara_base_generalizada(base_dados_completos)
+#' head(resultado)
+#' }
 #' @export
 
 prepara_base_generalizada = function(base_dados_completos){

@@ -2,13 +2,32 @@
 % Please edit documentation in R/prop_causas.R
 \name{prop_causas}
 \alias{prop_causas}
-\title{prop_causas}
+\title{Calcula Proporções de Causas}
 \usage{
 prop_causas(dados)
 }
 \arguments{
-\item{dados, }{padrao vetor de números.}
+\item{dados}{Data frame contendo os dados de óbitos com as colunas necessárias.}
+}
+\value{
+Data frame com as proporções calculadas para cada causa.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função calcula as proporções de causas de óbito nos dados fornecidos.
+}
+\examples{
+\dontrun{
+dados <- data.frame(
+  cdmun = c(1, 2),
+  micro = c("A", "B"),
+  meso = c("X", "Y"),
+  GBD = c("Causa1", "Causa2"),
+  ano = c(2020, 2021),
+  sexo = c("M", "F"),
+  uf = c("SP", "RJ"),
+  obitos = c(10, 20),
+  pop = c(1000, 2000)
+)
+resultado <- prop_causas(dados)
+}
 }

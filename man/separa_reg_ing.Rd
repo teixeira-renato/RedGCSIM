@@ -2,13 +2,36 @@
 % Please edit documentation in R/separa_reg_ing.R
 \name{separa_reg_ing}
 \alias{separa_reg_ing}
-\title{separa_reg_ing}
+\title{Separar Registros Ignorados}
 \usage{
 separa_reg_ing(x)
 }
 \arguments{
-\item{x, }{padrao vetor de números.}
+\item{x}{Data frame contendo os dados do SIM, incluindo colunas como \code{cdmun}, \code{idade}, \code{sexo} e outras relevantes.}
+}
+\value{
+Uma lista com duas bases de dados:
+\itemize{
+\item \code{ignorados}: Data frame com registros que possuem campos ignorados (município inválido, sexo ou idade ausente).
+\item \code{completos}: Data frame com registros válidos, sem campos ignorados.
+}
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função separa registros ignorados (campos em branco ou inválidos) de uma base de dados do SIM.
+Os registros ignorados incluem casos onde o município (\code{cdmun}), sexo ou idade estão ausentes ou marcados como valores inválidos.
+}
+\examples{
+\dontrun{
+# Exemplo de uso com dados fictícios
+dados <- data.frame(
+  cdmun = c("110001", "120001", "999999"),
+  idade = c(30, 999, "IGN"),
+  sexo = c("Masculino", "Feminino", "IGN"),
+  obitos = c(5, 10, 2)
+)
+
+resultado <- separa_reg_ing(dados)
+head(resultado$ignorados)
+head(resultado$completos)
+}
 }

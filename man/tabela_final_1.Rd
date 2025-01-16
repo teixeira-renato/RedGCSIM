@@ -2,23 +2,42 @@
 % Please edit documentation in R/tabela_final_1.R
 \name{tabela_final_1}
 \alias{tabela_final_1}
-\title{tabela_final_1}
+\title{Geração de Tabela Final com Dados do SIM}
 \usage{
 tabela_final_1(x)
 }
 \arguments{
-\item{x, }{padrao vetor de números.}
+\item{x}{Data frame contendo os dados do SIM, incluindo colunas como \code{CAUSABAS}, \code{SEXO}, \code{idade.cat}, \code{ano}, entre outras.}
 }
 \value{
-Um data frame com os municípios, regionais de saúde, estados e grandes regiões.
+Um data frame com informações agregadas por município, regionais de saúde, estados e grandes regiões, incluindo as seguintes colunas:
+\itemize{
+\item \code{cdmun}: Código do município.
+\item \code{micro}: Código da microrregião.
+\item \code{meso}: Código da mesorregião.
+\item \code{sexo}: Sexo reclassificado (Masculino, Feminino ou IGN).
+\item \code{idade}: Categoria de idade, com valores ignorados marcados como 'IGN'.
+\item \code{ano}: Ano dos óbitos.
+\item \code{GBD}: Classificação Global Burden of Disease (GBD) das causas.
+\item \code{obitos}: Número de óbitos agregados.
+\item \code{uf}: Unidade Federativa correspondente ao município.
+}
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função processa os dados do Sistema de Informações sobre Mortalidade (SIM), integrando informações de causas de óbitos, regiões administrativas e outras variáveis para produzir uma tabela consolidada.
 }
 \examples{
 \dontrun{
 # Exemplo de uso:
-dados <- data.frame(out.line2)
+dados <- data.frame(
+  CAUSABAS = c("A01", "B02"),
+  SEXO = c("1", "2"),
+  idade.cat = c("20-24", "25-29"),
+  ano = c(2020, 2021),
+  cdmun = c("110001", "120001")
+)
+
 dados_municipios <- tabela_final_1(dados)
+head(dados_municipios)
 }
 }

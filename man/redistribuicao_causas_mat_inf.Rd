@@ -2,13 +2,47 @@
 % Please edit documentation in R/redistribuicao_causas_mat_inf.R
 \name{redistribuicao_causas_mat_inf}
 \alias{redistribuicao_causas_mat_inf}
-\title{redistribuicao_causas_mat_inf}
+\title{Redistribuição de Causas Maternas e Infantis}
 \usage{
 redistribuicao_causas_mat_inf(dados_completos, dados_redis)
 }
 \arguments{
-\item{dados_completos, dados_redis, }{padrao vetor de números.}
+\item{dados_completos}{Data frame contendo os dados completos, incluindo colunas como
+\code{cdmun}, \code{idade}, \code{sexo}, \code{ano}, e \code{GBD}.}
+
+\item{dados_redis}{Data frame contendo as causas garbage a serem redistribuídas,
+com as colunas necessárias para o processo.}
+}
+\value{
+Um data frame atualizado com as redistribuições realizadas, incluindo novas
+colunas de redistribuição (\code{obitos.8}, \code{obitos.9}, etc.) e validações.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função redistribui causas de óbitos maternos e infantis (neonatais) nos dados do SIM,
+utilizando critérios específicos baseados em proporções calculadas.
+}
+\examples{
+\dontrun{
+# Dados fictícios
+dados_completos <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("25", "30"),
+  sexo = c("Feminino", "Feminino"),
+  ano = c(2020, 2021),
+  GBD = c("materna_hemorragia", "infant_neonatal_prematuridade"),
+  obitos = c(5, 10)
+)
+
+dados_redis <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("25", "30"),
+  sexo = c("Feminino", "Feminino"),
+  ano = c(2020, 2021),
+  c.red = c("_maternas", "_infant_neonat"),
+  redis = c(1.5, 2.5)
+)
+
+resultado <- redistribuicao_causas_mat_inf(dados_completos, dados_redis)
+head(resultado)
+}
 }

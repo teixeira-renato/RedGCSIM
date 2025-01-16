@@ -2,13 +2,52 @@
 % Please edit documentation in R/redistribuicao_causas_ivestigacao.R
 \name{redistribuicao_causas_ivestigacao}
 \alias{redistribuicao_causas_ivestigacao}
-\title{redistribuicao_causas_ivestigacao}
+\title{Redistribuição de Causas por Investigação}
 \usage{
 redistribuicao_causas_ivestigacao(dados_completos, dados_redis, pesos)
 }
 \arguments{
-\item{dados_completos, dados_redis, pesos, }{padrao vetor de números.}
+\item{dados_completos}{Data frame contendo os dados completos, incluindo colunas como \code{cdmun}, \code{idade}, \code{sexo}, \code{ano}, e \code{GBD}.}
+
+\item{dados_redis}{Data frame contendo as causas garbage a serem redistribuídas, com as colunas necessárias para a redistribuição.}
+
+\item{pesos}{Data frame com os pesos de redistribuição associados às causas garbage e suas respectivas categorias.}
+}
+\value{
+Um data frame com os dados redistribuídos, incluindo as novas colunas de redistribuição (\code{obitos.10}, \code{obitos.11}, \code{obitos.12}, etc.) e validações.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função redistribui causas de óbito classificadas como garbage (CG) nos dados do SIM,
+utilizando critérios específicos baseados em pesos e categorias predefinidas.
+}
+\examples{
+\dontrun{
+# Dados fictícios
+dados_completos <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("30", "25"),
+  sexo = c("Masculino", "Feminino"),
+  ano = c(2020, 2021),
+  GBD = c("Injuries - Falls", "materna_hemorragia"),
+  obitos = c(5, 10)
+)
+
+dados_redis <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("30", "25"),
+  sexo = c("Masculino", "Feminino"),
+  ano = c(2020, 2021),
+  c.red = c("_x59", "_pneumo"),
+  redis = c(1.2, 2.5)
+)
+
+pesos <- data.frame(
+  CG = c("_x59", "_pneumo"),
+  target = c("Injuries - Falls", "materna_hemorragia"),
+  weight = c(0.8, 1.5)
+)
+
+resultado <- redistribuicao_causas_ivestigacao(dados_completos, dados_redis, pesos)
+head(resultado)
+}
 }

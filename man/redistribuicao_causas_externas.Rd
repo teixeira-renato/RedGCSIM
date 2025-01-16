@@ -2,13 +2,37 @@
 % Please edit documentation in R/redistribuicao_causas_externas.R
 \name{redistribuicao_causas_externas}
 \alias{redistribuicao_causas_externas}
-\title{redistribuicao_causas_externas}
+\title{Redistribuição de Causas Externas}
 \usage{
 redistribuicao_causas_externas(dados_completos, dados_redis)
 }
 \arguments{
-\item{dados_completos, dados_redis, }{padrao vetor de números.}
+\item{dados_completos}{Data frame contendo os dados completos, com informações de causas, localidade, e outras variáveis relevantes.}
+
+\item{dados_redis}{Data frame contendo os dados de causas externas que serão redistribuídas.}
+
+\item{criterio}{(Opcional) Uma string que define o critério de redistribuição. O padrão é "default".}
+}
+\value{
+Um data frame com as causas externas redistribuídas, seguindo os critérios especificados.
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função redistribui as causas externas nos dados do Sistema de Informações
+sobre Mortalidade (SIM), utilizando critérios específicos para ajuste de dados.
+}
+\examples{
+\dontrun{
+dados_completos <- data.frame(
+  localidade = c("A", "B", "C"),
+  causa = c("Causa1", "Causa2", "Causa3"),
+  obitos = c(10, 20, 30)
+)
+dados_redis <- data.frame(
+  localidade = c("A", "B"),
+  causa = c("CausaX", "CausaY"),
+  obitos = c(5, 10)
+)
+resultado <- redistribuicao_causas_externas(dados_completos, dados_redis)
+print(resultado)
+}
 }

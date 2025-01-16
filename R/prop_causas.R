@@ -1,10 +1,26 @@
-#' prop_causas
+#' Calcula Proporções de Causas
 #'
-#' Carregar as bases de dados do SIM.
+#' Esta função calcula as proporções de causas de óbito nos dados fornecidos.
 #'
-#' @param dados, padrao vetor de números.
-#'
+#' @param dados Data frame contendo os dados de óbitos com as colunas necessárias.
+#' @return Data frame com as proporções calculadas para cada causa.
+#' @examples
+#' \dontrun{
+#' dados <- data.frame(
+#'   cdmun = c(1, 2),
+#'   micro = c("A", "B"),
+#'   meso = c("X", "Y"),
+#'   GBD = c("Causa1", "Causa2"),
+#'   ano = c(2020, 2021),
+#'   sexo = c("M", "F"),
+#'   uf = c("SP", "RJ"),
+#'   obitos = c(10, 20),
+#'   pop = c(1000, 2000)
+#' )
+#' resultado <- prop_causas(dados)
+#' }
 #' @export
+
 
 prop_causas <- function(dados) {
   if (!require("pacman")) install.packages("pacman") # garantir que o pacman está instalado
@@ -48,7 +64,7 @@ prop_causas <- function(dados) {
     group_by(ano, GBD, uf) %>%
     mutate(pmu.t = pop / sum(pop, na.rm = TRUE)) %>%
     ungroup()
-  
+
   #### Base micro
   micro <- base.2 %>%
     group_by(micro, meso, idade, GBD, ano, sexo, uf) %>%
@@ -66,7 +82,7 @@ prop_causas <- function(dados) {
            ob.mi.id.s = sum(ob, na.rm = TRUE)) %>%
     ungroup() %>%
     select(-ob)
-  
+
   #### Base meso
   meso <- base.2 %>%
     group_by(meso, idade, GBD, ano, sexo, uf) %>%
@@ -84,7 +100,7 @@ prop_causas <- function(dados) {
            ob.me.id.s = sum(ob, na.rm = TRUE)) %>%
     ungroup() %>%
     select(-ob)
-  
+
   #### Base uf
   uf <- base.2 %>%
     group_by(idade, GBD, ano, sexo, uf) %>%

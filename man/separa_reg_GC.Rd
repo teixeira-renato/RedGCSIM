@@ -2,13 +2,38 @@
 % Please edit documentation in R/separa_reg_GC.R
 \name{separa_reg_GC}
 \alias{separa_reg_GC}
-\title{separa_reg_GC}
+\title{Separa Registros de Garbage Code (GC)}
 \usage{
 separa_reg_GC(dados_sem_ign)
 }
 \arguments{
-\item{dados}{}
+\item{dados_sem_ign}{Data frame contendo os dados sem registros ignorados,
+incluindo colunas como \code{cdmun}, \code{GBD}, \code{sexo}, \code{ano}, etc.}
+}
+\value{
+Uma lista com duas bases de dados:
+\itemize{
+\item \code{redistribuir}: Data frame contendo os registros de Garbage Code (GC) a serem redistribuídos.
+\item \code{completos}: Data frame com todos os registros, incluindo os dados processados sem GC.
+}
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função processa as bases de dados do Sistema de Informações sobre Mortalidade (SIM),
+separando os registros de Garbage Code (GC) e preparando uma base completa para redistribuição.
+}
+\examples{
+\dontrun{
+# Exemplo de uso com dados fictícios
+dados_sem_ign <- data.frame(
+  cdmun = c("110001", "120001"),
+  GBD = c("_injuries", "Injuries - Falls"),
+  sexo = c("Masculino", "Feminino"),
+  ano = c(2020, 2021),
+  obitos.2 = c(5, 10)
+)
+
+resultado <- separa_reg_GC(dados_sem_ign)
+head(resultado$redistribuir)
+head(resultado$completos)
+}
 }

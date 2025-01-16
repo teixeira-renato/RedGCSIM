@@ -2,13 +2,44 @@
 % Please edit documentation in R/redistribuicao_dados_faltantes.R
 \name{redistribuicao_dados_faltantes}
 \alias{redistribuicao_dados_faltantes}
-\title{redistribuicao_dados_faltantes}
+\title{Redistribuição de Dados Faltantes}
 \usage{
 redistribuicao_dados_faltantes(base_prop, dados_ign)
 }
 \arguments{
-\item{base_prop, dados_ign, }{padrao vetor de números.}
+\item{base_prop}{Data frame contendo as proporções pré-calculadas usadas para redistribuição.
+Deve incluir informações como município (\code{cdmun}), idade, sexo, e proporções (\verb{pr.*}).}
+
+\item{dados_ign}{Data frame contendo os registros com dados faltantes, incluindo colunas como \code{idade},
+\code{sexo}, \code{cdmun}, e informações de óbitos.}
+}
+\value{
+Um data frame com os dados redistribuídos, incluindo colunas adicionais para diferentes níveis de redistribuição
+(por idade, sexo, município e combinações).
 }
 \description{
-Carregar as bases de dados do SIM.
+Esta função redistribui dados faltantes (como idade, sexo, município, ou combinações desses) nos registros
+do SIM, utilizando proporções pré-calculadas para completar os valores ausentes.
+}
+\examples{
+\dontrun{
+# Exemplo de uso com dados fictícios
+base_prop <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("30", "25"),
+  sexo = c("Masculino", "Feminino"),
+  pr.mu.id = c(0.8, 0.6),
+  pr.mi.id = c(0.2, 0.4)
+)
+
+dados_ign <- data.frame(
+  cdmun = c("110001", "120001"),
+  idade = c("IGN", "25"),
+  sexo = c("Masculino", "IGN"),
+  obitos = c(5, 10)
+)
+
+resultado <- redistribuicao_dados_faltantes(base_prop, dados_ign)
+head(resultado)
+}
 }
