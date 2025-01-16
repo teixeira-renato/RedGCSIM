@@ -1,10 +1,10 @@
 Package: RedGCSIM
-Title: What the Package Does (One Line, Title Case)
+Title: Algoritmo de Redistribuição de Causas Garbage para Dados do SIM
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph). Date 16-jul-2024.
+Authors@R:
+  person("Renato", "Teixeira", email = "renato115@yahoo.com", role = c("aut", "cre"),
+         comment = c(ORCID = "0000-0002-1259-6812"))
+Description: Implementa um algoritmo para redistribuição de causas garbage nos dados do Sistema de Informações sobre Mortalidade (SIM) do Brasil, desenvolvido pelo Grupo de Pesquisas em Epidemiologia e Avaliação em Saúde (GPEAS) da UFMG.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
