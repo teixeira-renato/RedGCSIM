@@ -1,41 +1,68 @@
-# Algoritmo de redistribuição de causas garbage para os dados do SIM
-##Versão: 01.2024a
+# Algoritmo de Redistribuição de Causas Garbage para os Dados do SIM
 
-O repositório foi criado para compartilhar as informações metodológicas e técnicas do processo de redistribuição de causas garbage para o Brasil que vem sendo desenvolvido pelo Grupo de Pesquisas em Epidemiologia e Avaliação em Saúde (GPEAS) da Faculdade de Medicina da Universidade Federal de Minas Gerais (UFMG) coordenado pela Profa. Deborah Malta.
+**Versão: 01.2024a**
 
-O trabalho continua em desenvolvimento e ao surgir novas versões o repositório será atualizado pelo grupo (redegbdbrasil2015@gmail.com).
+Este repositório foi criado para compartilhar informações metodológicas e técnicas relacionadas ao processo de redistribuição de causas garbage no Brasil. Este trabalho é desenvolvido pelo **Grupo de Pesquisas em Epidemiologia e Avaliação em Saúde (GPEAS)** da Faculdade de Medicina da Universidade Federal de Minas Gerais (UFMG), sob a coordenação da Profa. **Deborah Malta**.
 
-Um pacote está em desenvolvimento e em breve novas atualizações poderão facilitar o uso do algoritmo para usuários finais.
+Este algoritmo está em constante desenvolvimento, e novas versões serão disponibilizadas no repositório. Sugestões e contribuições são bem-vindas e podem ser enviadas ao pesquisador responsável Renato Teixeira  **renato115@yahoo.com**.
 
-Sua ajuda é bem vinda para sugestões e identificações a serem implementadas.
+### **Sobre o Pacote**
+Atualmente, estamos desenvolvendo um pacote em R que tem como objetivo facilitar a aplicação do algoritmo de redistribuição. Atualizações frequentes serão realizadas para aprimorar sua funcionalidade e atender às necessidades dos usuários.
 
+Sua contribuição para melhorias, identificação de erros ou novas funcionalidades será muito valiosa.
 
+---
 
-## Dicas de uso
+## **Guia de Uso do Pacote**
 
-Para usar o pacote recomenda-se seguir os passos e funções descritas a seguir:
+Abaixo estão os passos recomendados para usar o pacote e aplicar o algoritmo:
 
-1 - Carregar a base em um data frame (df)
+### **Passos**
 
-2 - Usar a função padroniza_idade(x = df) para padronizar a idade do SIM no padrão utilizado pelo pacote
+1. **Carregar a base de dados:**
+   Inicie carregando os dados do SIM em um data frame (por exemplo, `df`).
 
-3 - Usar a função padroniza_local(df2) para padronizar os municípios com suas respectivas informações de meso e macro região
+2. **Padronizar as idades:**
+   Use a função `padroniza_idade(x = df)` para ajustar as idades no formato esperado pelo pacote.
 
-4 - Usar a função tabela_final_1(df3) para gerar um df com as variáveis utilizadas pelo pacote e com os padrões necessários
+3. **Padronizar informações de localidade:**
+   Utilize `padroniza_local(df2)` para adicionar informações de municípios, mesorregiões e macrorregiões.
 
-5 - Usar a função separa_reg_ing(df4) para separar os dados com informações ignoradas
+4. **Criar a tabela inicial:**
+   Execute `tabela_final_1(df3)` para gerar um data frame contendo as variáveis formatadas de acordo com os padrões do pacote.
 
-6 - Usar a função prepara_base_generalizada(df5[["completos"]]) para gerar a base completa para gerar os pesos para o processo de redistribuição
+5. **Separar registros ignorados:**
+   A função `separa_reg_ing(df4)` separa os dados em duas categorias: registros completos e registros com informações ignoradas.
 
-7 - Usar a função prop_causas(df6) para gerar as proporções dos dados completod
+6. **Preparar a base generalizada:**
+   Com `prepara_base_generalizada(df5[["completos"]])`, crie a base necessária para gerar os pesos para redistribuição.
 
-8 - Usar a função redistribuicao_dados_faltantes(base_prop = df7, dados_ign = df5[["ignorados"]]) para redistribuir aqueles dados com ignorados ou dados faltantes para sexo, idade e município de residência
+7. **Gerar proporções:**
+   Aplique a função `prop_causas(df6)` para calcular proporções entre as diferentes causas.
 
-9 - Usar a função separa_reg_GC(df8) para gerar os pacotes de redistribuição considerados na versão usada
+8. **Redistribuir dados faltantes:**
+   Use `redistribuicao_dados_faltantes(base_prop = df7, dados_ign = df5[["ignorados"]])` para redistribuir registros com informações faltantes de sexo, idade e município.
 
-10 - Aqui inicia-se o processo de redistribuição. Primeiro as causas externas. Para isso, usar a função redistribuicao_causas_externas(dados_completos = df9[["completos"]],dados_redis = df9[["redistribuir"]])
+9. **Separar causas garbage:**
+   A função `separa_reg_GC(df8)` gera os pacotes para redistribuição de causas garbage baseados na versão atual do algoritmo.
 
-11 - Depois as causas maternase infeciosa por da função redistribuicao_causas_mat_inf(dados_completos = out.df10,dados_redis = outdf9file9[["redistribuir"]])
+10. **Redistribuir causas externas:**
+    Use `redistribuicao_causas_externas(dados_completos = df9[["completos"]], dados_redis = df9[["redistribuir"]])` para iniciar a redistribuição de causas externas.
 
-12 - Redistribuição das causas baseadas na investigação de óbitos: redistribuicao_causas_ivestigacao(dados_completos = df11,dados_redis = df9[["redistribuir"]], pesos =paste0(path,"/ICD_MAPPING_V6_2023 pos OPAS_nov2023.xlsx"))
-13 - 
+11. **Redistribuir causas maternas e infecciosas:**
+    Aplique `redistribuicao_causas_mat_inf(dados_completos = out.df10, dados_redis = outdf9file9[["redistribuir"]])` para redistribuir causas relacionadas a óbitos maternos e infecciosos.
+
+12. **Redistribuir causas investigadas:**
+    Use `redistribuicao_causas_ivestigacao(dados_completos = df11, dados_redis = df9[["redistribuir"]], pesos = paste0(path, "/ICD_MAPPING_V6_2023 pos OPAS_nov2023.xlsx"))` para redistribuir óbitos baseados em investigações específicas.
+
+---
+
+## **Contribuições**
+Se você deseja contribuir com o projeto, tenha dúvidas ou mais informações, entre em contato com:
+
+- Envie sugestões ou relatórios de bugs para **renato115@yahoo.com**.
+- Participe do desenvolvimento através de pull requests neste repositório.
+
+Agradecemos seu interesse e colaboração!
+
+---
