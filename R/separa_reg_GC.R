@@ -33,35 +33,11 @@ separa_reg_GC = function (dados_sem_ign){
 
   # Definição de causas targets e códigos garbage para redistribuir
 
-  causas <- c( "Injuries - Falls"    , "_pneumo",
-               "Injuries - Homicide" , "Injuries - Others"  ,
-               "Injuries - Road"     , "Injuries - Suicide" ,
-               "other_causes_all","other_causes-lri",
-               "other_desnutricao_all_ages","Injuries - Other transport injuries",
-               "materna_ectopica"    , "materna_hipertensiva",
-               "materna_trab_parto"  , "materna_aborto_induzido",
-               "materna_tardia"      , "materna_aborto_espontaneo",
-               "materna_sepsis"      , "materna_indiretas",
-               "materna_outras"      , "materna_hemorragia",
-               "trans_dengue"        , "materna_materna_hiv",
-               "trans_encefatlite"   , "trans_schistosomiasis",
-               "trans_chagas"        , "trans_tuberculose",
-               "trans_hiv_aids"      , "trans_doenças_diarreicas",
-               "trans_varicela"      , "trans_leishmaniose",
-               "trans_zoonoticas"    , "trans_hepatite",
-               "trans_meningites"    , "trans_sexualmente_transmissíveis",
-               "trans_desnutricao"   , "trans_febre_amarela",
-               "trans_infec_urinaria", "trans_malaria",
-               "dcnt_neoplasms"      , "dcnt_chronic respiratory",
-               "dcnt_diabetes"       , "dcnt_cardiovascular",
-               "anom_congenitas"     , "aspiracao_pulmunar",
-               "lri_post_neo" , "infant_neonatal_encefalopatia",
-               "infant_subita"       , "infant_neonatal_hemolitica",
-               "obst_intestinal"     , "infant_neonatal_prematuridade",
-               "infant_neonatal_other","infant_neonatal_sepsis")
+  causas=unique(ICD$target)[!grepl(pattern = "^_",x = unique(ICD$target))]
+  causas=c(causas,"_pneumo")
 
-  redis <- c("_injuries" , "_inj (hom,suic, fall,road)", "_all", "_inj (hom,suic,other)" ,
-             "_pneumo","_inj (hom,sui)" , "_inj (hom,sui,transp)","_maternas", "_x59", "_y34","_infant_neonat")
+
+  redis=unique(ICD$CG)[grepl(pattern = "^_",x = unique(ICD$CG))]
 
   `%notin%` <- Negate(`%in%`)
 
@@ -81,6 +57,12 @@ separa_reg_GC = function (dados_sem_ign){
 
   cdmun <- cdmun[cdmun %notin% notwantedlevels]
 
+  #Base sem dados de Covid
+
+  base_covid <- dados_sem_ign %>% 
+    select(cdmun:pop,obitos,obitos.2) %>% 
+    filter(GBD == "covid_19")
+
   #Base com o GC
   base.r <- dados_sem_ign  %>%
     filter(GBD %in% redis) %>%
@@ -91,6 +73,7 @@ separa_reg_GC = function (dados_sem_ign){
   # Montagem da Base SEM os GC ----
 
   base.4 <- dados_sem_ign %>%
+    filter(GBD != "covid_19")%>%
     filter(GBD %in% causas) %>%
     select(cdmun:meso, obitos.2, uf)
 
@@ -139,4 +122,5 @@ separa_reg_GC = function (dados_sem_ign){
   out.file <- list(redistribuir=base.r,completos=base.5)
 
   return(out.file)
+  return(base_covid)
 }
