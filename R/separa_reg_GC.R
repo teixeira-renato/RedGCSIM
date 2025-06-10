@@ -33,11 +33,11 @@ separa_reg_GC = function (dados_sem_ign){
 
   # Definição de causas targets e códigos garbage para redistribuir
 
-  causas=unique(ICD$target)[!grepl(pattern = "^_",x = unique(ICD$target))]
+causas=unique(ICD$CLASS_GPEAS_PRODUCAO)[!grepl(pattern = "^_",x = unique(ICD$CLASS_GPEAS_PRODUCAO))]
   causas=c(causas,"_pneumo")
 
 
-  redis=unique(ICD$CG)[grepl(pattern = "^_",x = unique(ICD$CG))]
+redis=unique(ICD$CLASS_GPEAS_PRODUCAO)[grepl(pattern = "^_",x = unique(ICD$CLASS_GPEAS_PRODUCAO))]
 
   `%notin%` <- Negate(`%in%`)
 
