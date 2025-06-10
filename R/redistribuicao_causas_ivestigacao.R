@@ -464,75 +464,145 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
     left_join(base.r.pneumo, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
 
   ###Proporções PNE
-
+  
   ###PRMUN
-  muni.pne <- base.5 %>%
+  muni.pne <- base.5 %>% 
     filter(GBD %in% c(trans,mat,"other_causes_all","other_causes-lri","other_desnutricao_all_ages")) %>%
-    filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
-    group_by(cdmun,micro,meso,c.red,idade, GBD, ano, sexo, uf) %>%
-    summarise(ob=sum(obitos.11, na.rm = T))%>%
-    ungroup() %>%
-    group_by(cdmun,micro,meso,c.red, idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    group_by(cdmun,micro,meso,c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(cdmun,micro,meso,c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.mu=ob/sum(ob,na.rm=T),
+           ob.mu=sum(ob,na.rm=T)) %>% 
     select(-ob)
-
-  ###PR.MICRO
-  micro.pne <- base.5 %>%
+  
+  ###PRMUN parte 2
+  muni.pne.2 <- base.5 %>% 
+    filter(GBD %in% road) %>%
+    group_by(cdmun,micro,meso,c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(cdmun,micro,meso,c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.mu=ob/sum(ob,na.rm=T),
+           ob.mu=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  
+  muni.pne <- rbind(muni.pne, muni.pne.2)
+  rm(muni.pne.2)
+  
+  ###PR.MICRO 
+  micro.pne <- base.5 %>% 
     filter(GBD %in% c(trans,mat,"other_causes_all","other_causes-lri","other_desnutricao_all_ages")) %>%
-    filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
-    group_by(micro,meso, c.red,idade, GBD, ano, sexo, uf) %>%
-    summarise(ob=sum(obitos.11, na.rm = T))%>%
-    ungroup() %>%
-    group_by(micro,meso, c.red,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    group_by(micro,meso, c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(micro,meso, c.red,idade, ano, sexo, uf) %>% 
+    mutate(pr.mi=ob/sum(ob,na.rm=T),
+           ob.mi=sum(ob,na.rm=T)) %>% 
     select(-ob)
-
-  ###PR.MESO
-  meso.pne <- base.5 %>%
+  
+  ###PR.MICRO parte 2
+  micro.pne.2 <- base.5 %>% 
+    filter(GBD %in% road) %>% 
+    group_by(micro,meso, c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(micro,meso, c.red,idade, ano, sexo, uf) %>% 
+    mutate(pr.mi=ob/sum(ob,na.rm=T),
+           ob.mi=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  
+  micro.pne <- rbind(micro.pne, micro.pne.2)
+  rm(micro.pne.2)
+  
+  ###PR.MESO 
+  meso.pne <- base.5 %>% 
     filter(GBD %in% c(trans,mat,"other_causes_all","other_causes-lri","other_desnutricao_all_ages")) %>%
-    filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
-    group_by(meso, c.red,idade, GBD, ano, sexo, uf) %>%
-    summarise(ob=sum(obitos.11, na.rm = T))%>%
-    ungroup() %>%
-    group_by(meso,c.red, idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    group_by(meso, c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(meso,c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.me=ob/sum(ob,na.rm=T),
+           ob.me=sum(ob,na.rm=T)) %>% 
     select(-ob)
-
+  
+  meso.pne.2 <- base.5 %>% 
+    filter(GBD %in% road) %>% 
+    group_by(meso, c.red,idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(meso,c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.me=ob/sum(ob,na.rm=T),
+           ob.me=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  meso.pne <- rbind(meso.pne, meso.pne.2)
+  rm(meso.pne.2)
+  
   ###PR.UF
   uf.pne <- base.5 %>%
     filter(GBD %in% c(trans,mat,"other_causes_all","other_causes-lri","other_desnutricao_all_ages")) %>%
-    filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
-    group_by( c.red, idade, GBD, ano, sexo, uf) %>%
-    summarise(ob=sum(obitos.11, na.rm = T))%>%
-    ungroup() %>%
-    group_by(c.red, idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    group_by( c.red, idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.uf=ob/sum(ob,na.rm=T),
+           ob.uf=sum(ob,na.rm=T)) %>% 
     select(-ob)
-
+  
+  ###PR.UF parte 2
+  uf.pne.2 <- base.5 %>%
+    filter(GBD %in% road) %>%
+    group_by( c.red, idade, GBD, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(c.red, idade, ano, sexo, uf) %>% 
+    mutate(pr.uf=ob/sum(ob,na.rm=T),
+           ob.uf=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  uf.pne <- rbind(uf.pne, uf.pne.2)
+  rm(uf.pne.2)
+  
+  
   ###PR.REG
   rg.pne <- base.5 %>%
     filter(GBD %in% c(trans,mat,"other_causes_all","other_causes-lri","other_desnutricao_all_ages")) %>%
-    filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
-    group_by(c.red, idade, GBD, ano, sexo, reg) %>%
-    summarise(ob=sum(obitos.11, na.rm = T))%>%
-    ungroup() %>%
-    group_by(c.red, idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    #filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
+    group_by(c.red, idade, GBD, ano, sexo, reg) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(c.red, idade, ano, sexo, reg) %>% 
+    mutate(pr.rg=ob/sum(ob,na.rm=T),
+           ob.rg=sum(ob,na.rm=T)) %>% 
     select(-ob)
-
-  base.5 <- base.5 %>%
-    left_join(muni.pne, by=c('cdmun','micro','meso','c.red', 'idade','GBD', 'ano', 'sexo', 'uf')) %>%
-    left_join(micro.pne, by=c('micro','meso', 'c.red', 'idade', 'GBD', 'ano', 'sexo', 'uf')) %>%
-    left_join(meso.pne, by=c('meso','c.red', 'idade', 'GBD', 'ano', 'sexo', 'uf')) %>%
-    left_join(uf.pne, by=c( 'c.red','idade', 'GBD', 'ano', 'sexo', 'uf')) %>%
+  
+  ###PR.REG
+  rg.pne.2 <- base.5 %>%
+    filter(GBD %in% road) %>% 
+    #filter(c.red %in% c('_pneumo_inf','_pneumo_adult','_pneumo_idoso'))%>%
+    group_by(c.red, idade, GBD, ano, sexo, reg) %>% 
+    summarise(ob=sum(obitos.11, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(c.red, idade, ano, sexo, reg) %>% 
+    mutate(pr.rg=ob/sum(ob,na.rm=T),
+           ob.rg=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  
+  rg.pne <- rbind(rg.pne, rg.pne.2)
+  rm(rg.pne.2)
+  head(base.5)
+  base.5 <- base.5 %>% 
+    left_join(muni.pne, by=c('cdmun','micro','meso','c.red', 'idade','GBD', 'ano', 'sexo', 'uf')) %>% 
+    left_join(micro.pne, by=c('micro','meso', 'c.red', 'idade', 'GBD', 'ano', 'sexo', 'uf')) %>% 
+    left_join(meso.pne, by=c('meso','c.red', 'idade', 'GBD', 'ano', 'sexo', 'uf')) %>% 
+    left_join(uf.pne, by=c( 'c.red','idade', 'GBD', 'ano', 'sexo', 'uf')) %>% 
     left_join(rg.pne, by=c( 'c.red','idade','GBD', 'ano', 'sexo', 'reg'))
-
-  base.5 <- base.5 %>%
+  
+    base.5 <- base.5 %>%
     left_join(pneumo,by=c("GBD"="target","c.red"="c.red"))%>%
     mutate(redis=ifelse(!is.na(weight),redis*weight,redis))%>%
     mutate(pne.1=ifelse(GBD %in% c("_pneumo",inj,dcnt),redis,redis*pr.mu),
@@ -551,12 +621,17 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
                                                   ifelse(!is.na(pne.5), obitos.11+pne.5, obitos.11))))))%>%
     mutate(obitos.12=ifelse(GBD%in%"_pneumo",obitos.12-obitos.11,obitos.12))
 
-
-  rm(trans,inj,mat,dcnt,ICD_pneumo)
+  rm(trans,inj,mat,dcnt,road,ICD_pneumo)
   gc()
 
   #Validação
-  #
+  # sum(base.5$obitos.12,na.rm=T)-sum(base.5$obitos.11,na.rm=T)
+  # obitos_para_redis <- sum(base.r[grepl('_pneumo',base.r$c.red),]$redis, na.rm = T)
+  # obitos_pre_redis <- sum(base.5$obitos.12,na.rm = T)
+  # round(sum(base.5$obitos.11,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis),0)
+  # round(sum(base.5$obitos.11,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis),0)
+
+  
   # base.r.sp <- base.r %>%
   #   filter(c.red%notin%c("_pneumo","_injuries","_inj (hom,sui)","_inj (hom,suic, fall)","_inj (hom,sui,transp)","_inj (hom,suic,other)","_maternas","_infant_neonat","_x59","_y34")) %>%
   #   group_by(cdmun,sexo,idade) %>%
@@ -567,11 +642,79 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
   #### Casos redistribuídos entre todas as causas------
   #### Criação da variável com a causa CG para nortear a redistribuição
   base.5 <- base.5 %>%
-    select(-redis,-redis.2, -redis.3, -redis.4, -redis.5) %>%
+    select(-redis,-redis.2, -redis.3, -redis.4, -redis.5,
+           -pr.mu,-pr.mi,-pr.me,-pr.uf,-pr.rg,
+           -ob.mu,-ob.mi,-ob.me,-ob.uf,-ob.rg) %>%
     mutate(c.red=ifelse(GBD%in%"_pneumo",NA,'_all')) %>%
     left_join(dados_redis, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
 
-  base.5 <- base.5 %>%
+  ###Proporções _all
+  
+  ###PRMUN
+  muni.all <- base.5 %>% 
+    filter(GBD!="_pneumo") %>% 
+    group_by(cdmun,micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.2, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mu=ob/sum(ob,na.rm=T),
+           ob.mu=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MICRO 
+  micro.all <- base.5 %>% 
+    filter(GBD!="_pneumo") %>% 
+    group_by(micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.2, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mi=ob/sum(ob,na.rm=T),
+           ob.mi=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MESO 
+  meso.all <- base.5 %>% 
+    filter(GBD!="_pneumo") %>% 
+    group_by(meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.2, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.me=ob/sum(ob),
+           ob.me=sum(ob)) %>% 
+    select(-ob)
+  
+  ###PR.UF
+  uf.all <- base.5 %>%
+    filter(GBD!="_pneumo") %>% 
+    group_by( GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.2, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, uf) %>% 
+    mutate(pr.uf=ob/sum(ob),
+           ob.uf=sum(ob)) %>% 
+    select(-ob)
+  
+  ###PR.REG
+  reg.all <- base.5 %>%
+    filter(GBD!="_pneumo") %>% 
+    mutate(reg=str_sub(cdmun,1,1)) %>% 
+    group_by( GBD,idade, ano, sexo, reg) %>% 
+    summarise(ob=sum(obitos.2, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, reg) %>% 
+    mutate(pr.rg=ob/sum(ob,na.rm=T),
+           ob.rg=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  
+  base.5 <- base.5 %>% 
+    left_join(muni.all, by=c('cdmun','micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(micro.all, by=c('micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(meso.all, by=c('meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(uf.all, by=c( 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(reg.all, by=c( 'GBD','idade', 'ano', 'sexo', 'reg')) 
+  
+  base.5 <- base.5 %>% 
     mutate(all.1=redis*pr.mu,
            redis.2=ifelse(is.na(all.1) & ob.mu==0, redis,NA),
            all.2=redis.2*pr.mi,
@@ -581,18 +724,11 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
            all.4=redis.4*pr.uf,
            redis.5=ifelse(is.na(all.4) & ob.uf==0, redis.4,NA),
            all.5=redis.5*pr.rg,
-           obitos.13=ifelse(!is.na(all.1), obitos.12+all.1,
+           obitos.13=ifelse(!is.na(all.1), obitos.12+all.1, 
                             ifelse(!is.na(all.2), obitos.12+all.2,
                                    ifelse(!is.na(all.3), obitos.12+all.3,
                                           ifelse(!is.na(all.4), obitos.12+all.4,
                                                  ifelse(!is.na(all.5), obitos.12+all.5, obitos.12))))))
-
-  #Validação
-  # obitos_para_redis <- sum(base.r[grepl("_all",base.r$c.red),]$redis, na.rm = T)
-  # obitos_pre_redis <- sum(base.5$obitos.12,na.rm = T)
-  # round(sum(base.5$obitos.13,na.rm = T),0)==round(sum(obitos_para_redis,obitos_pre_redis),0)
-  #
-
 
   return(base.5)
 }
