@@ -29,37 +29,15 @@
 #' }
 #' @export
 
-prepara_base_generalizada = function(base_dados_completos){
-  `%notin%` <- Negate(`%in%`)
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse,rio) # pacotes necessários
+  prepara_base_generalizada = function(base_dados_completos){
+    `%notin%` <- Negate(`%in%`)
+    if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
+    pacman::p_load(tidyverse,rio) # pacotes necessários
 
-  causas <- c( "Injuries - Falls"    , "_pneumo",
-               "Injuries - Homicide" , "Injuries - Others"  ,
-               "Injuries - Road"     , "Injuries - Suicide" ,
-               "other_causes_all","other_causes-lri",
-               "other_desnutricao_all_ages","Injuries - Other transport injuries",
-               "materna_ectopica"    , "materna_hipertensiva",
-               "materna_trab_parto"  , "materna_aborto_induzido",
-               "materna_tardia"      , "materna_aborto_espontaneo",
-               "materna_sepsis"      , "materna_indiretas",
-               "materna_outras"      , "materna_hemorragia",
-               "trans_dengue"        , "materna_materna_hiv",
-               "trans_encefatlite"   , "trans_schistosomiasis",
-               "trans_chagas"        , "trans_tuberculose",
-               "trans_hiv_aids"      , "trans_doenças_diarreicas",
-               "trans_varicela"      , "trans_leishmaniose",
-               "trans_zoonoticas"    , "trans_hepatite",
-               "trans_meningites"    , "trans_sexualmente_transmissíveis",
-               "trans_desnutricao"   , "trans_febre_amarela",
-               "trans_infec_urinaria", "trans_malaria",
-               "dcnt_neoplasms"      , "dcnt_chronic respiratory",
-               "dcnt_diabetes"       , "dcnt_cardiovascular",
-               "anom_congenitas"     , "aspiracao_pulmunar",
-               "infant_lri_post_neo" , "infant_neonatal_encefalopatia",
-               "infant_subita"       , "infant_neonatal_hemolitica",
-               "obst_intestinal"     , "infant_neonatal_prematuridade",
-               "infant_neonatal_other","infant_neonatal_sepsis")
+  # Causas target
+    
+  causas=unique(ICD$CLASS_GPEAS_PRODUCAO)[!grepl(pattern = "^_",x = unique(ICD$CLASS_GPEAS_PRODUCAO))]
+  causas=c(causas,"_pneumo")
 
   #Codigo de municipio
 

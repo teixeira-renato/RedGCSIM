@@ -29,32 +29,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse) # pacotes necessários
 
-  causas <- c( "Injuries - Falls"    , "_pneumo",
-               "Injuries - Homicide" , "Injuries - Others"  ,
-               "Injuries - Road"     , "Injuries - Suicide" ,
-               "other_causes_all","other_causes-lri",
-               "other_desnutricao_all_ages","Injuries - Other transport injuries",
-               "materna_ectopica"    , "materna_hipertensiva",
-               "materna_trab_parto"  , "materna_aborto_induzido",
-               "materna_tardia"      , "materna_aborto_espontaneo",
-               "materna_sepsis"      , "materna_indiretas",
-               "materna_outras"      , "materna_hemorragia",
-               "trans_dengue"        , "materna_materna_hiv",
-               "trans_encefatlite"   , "trans_schistosomiasis",
-               "trans_chagas"        , "trans_tuberculose",
-               "trans_hiv_aids"      , "trans_doenças_diarreicas",
-               "trans_varicela"      , "trans_leishmaniose",
-               "trans_zoonoticas"    , "trans_hepatite",
-               "trans_meningites"    , "trans_sexualmente_transmissíveis",
-               "trans_desnutricao"   , "trans_febre_amarela",
-               "trans_infec_urinaria", "trans_malaria",
-               "dcnt_neoplasms"      , "dcnt_chronic respiratory",
-               "dcnt_diabetes"       , "dcnt_cardiovascular",
-               "anom_congenitas"     , "aspiracao_pulmunar",
-               "lri_post_neo" , "infant_neonatal_encefalopatia",
-               "infant_subita"       , "infant_neonatal_hemolitica",
-               "obst_intestinal"     , "infant_neonatal_prematuridade",
-               "infant_neonatal_other","infant_neonatal_sepsis")
+  causas=unique(ICD$target)[!grepl(pattern = "^_",x = unique(ICD$target))]
+  causas=c(causas,"_pneumo")
 
   ##### Injuries  -----
 
@@ -72,8 +48,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.2, na.rm = T))%>%
     ungroup() %>%
     group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    mutate(pr.mu=ob/sum(ob, na.rm = T),
+           ob.mu=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MICRO
@@ -83,8 +59,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.2, na.rm = T))%>%
     ungroup() %>%
     group_by(micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    mutate(pr.mi=ob/sum(ob, na.rm = T),
+           ob.mi=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MESO
@@ -94,8 +70,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.2, na.rm = T))%>%
     ungroup() %>%
     group_by(meso,idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    mutate(pr.me=ob/sum(ob, na.rm = T),
+           ob.me=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.UF
@@ -105,8 +81,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.2, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    mutate(pr.uf=ob/sum(ob, na.rm = T),
+           ob.uf=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.REG
@@ -117,8 +93,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.2, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    mutate(pr.rg=ob/sum(ob, na.rm = T),
+           ob.rg=sum(ob, na.rm = T)) %>%
     select(-ob)
 
 
@@ -173,8 +149,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.3, na.rm = T))%>%
     ungroup() %>%
     group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    mutate(pr.mu=ob/sum(ob, na.rm = T),
+           ob.mu=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MICRO
@@ -184,8 +160,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.3, na.rm = T))%>%
     ungroup() %>%
     group_by(micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    mutate(pr.mi=ob/sum(ob, na.rm = T),
+           ob.mi=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MESO
@@ -195,8 +171,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.3, na.rm = T))%>%
     ungroup() %>%
     group_by(meso,idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    mutate(pr.me=ob/sum(ob, na.rm = T),
+           ob.me=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.UF
@@ -206,8 +182,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.3, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    mutate(pr.uf=ob/sum(ob, na.rm = T),
+           ob.uf=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.REG
@@ -217,8 +193,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.3, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    mutate(pr.rg=ob/sum(ob, na.rm = T),
+           ob.rg=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   base.5 <- base.5 %>%
@@ -253,7 +229,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
 
   ########_inj (hom,suic, fall,road): -----
 
-  inj.hsf <-c("Injuries - Falls", "Injuries - Homicide", "Injuries - Suicide", "Injuries - Road")
+  inj.hsf <-c("Injuries - Falls", "Injuries - Homicide", "Injuries - Suicide", "Injuries - Road - Buses and Heavy Vehicles","Injuries - Road - Cyclist",                          
+            "Injuries - Road - Four-Wheel Cars and Light Vechicles","Injuries - Road - Motocyclist",                        
+            "Injuries - Road - Other","Injuries - Road - Pedestrian")
 
   base.5 <- base.5 %>%
     select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>%
@@ -268,8 +246,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.4, na.rm = T))%>%
     ungroup() %>%
     group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    mutate(pr.mu=ob/sum(ob, na.rm = T),
+           ob.mu=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MICRO
@@ -279,11 +257,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.4, na.rm = T))%>%
     ungroup() %>%
     group_by(micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    mutate(pr.mi=ob/sum(ob, na.rm = T),
+           ob.mi=sum(ob, na.rm = T)) %>%
     select(-ob)
-
-
 
   ###PR.MESO
   me.inj.hsf <- base.5 %>%
@@ -292,11 +268,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.4, na.rm = T))%>%
     ungroup() %>%
     group_by(meso,idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    mutate(pr.me=ob/sum(ob, na.rm = T),
+           ob.me=sum(ob, na.rm = T)) %>%
     select(-ob)
-
-
 
   ###PR.UF
   uf.inj.hsf <- base.5 %>%
@@ -305,10 +279,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.4, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    mutate(pr.uf=ob/sum(ob, na.rm = T),
+           ob.uf=sum(ob, na.rm = T)) %>%
     select(-ob)
-
 
   ###PR.REG
   rg.inj.hsf <- base.5 %>%
@@ -317,10 +290,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.4, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    mutate(pr.rg=ob/sum(ob, na.rm = T),
+           ob.rg=sum(ob, na.rm = T)) %>%
     select(-ob)
-
 
   base.5 <- base.5 %>%
     left_join(mu.inj.hsf, by=c('cdmun','micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>%
@@ -328,8 +300,6 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     left_join(me.inj.hsf, by=c('meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>%
     left_join(uf.inj.hsf, by=c( 'GBD','idade', 'ano', 'sexo', 'uf')) %>%
     left_join(rg.inj.hsf, by=c( 'GBD','idade', 'ano', 'sexo', 'reg'))
-
-
 
   base.5 <- base.5 %>%
     mutate(ihsf.1=redis*pr.mu,
@@ -356,14 +326,15 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
 
   ########	_inj (hom,sui,transp):-----
 
-  inj.hst <-c("Injuries - Road", "Injuries - Suicide", "Injuries - Homicide", "Injuries - Other transport injuries")
-
+inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other transport injuries","Injuries - Road - Buses and Heavy Vehicles","Injuries - Road - Cyclist",                          
+            "Injuries - Road - Four-Wheel Cars and Light Vechicles","Injuries - Road - Motocyclist",                        
+            "Injuries - Road - Other","Injuries - Road - Pedestrian")
+  
   base.5 <- base.5 %>%
     select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>%
     mutate(c.red=ifelse(GBD %in% inj.hst, '_inj (hom,sui,transp)', NA)) %>%
     mutate(c.red=ifelse(GBD %in% "Injuries - Suicide" & idade %in% c("Early Neonatal","Post Neonatal","Late Neonatal","<1 year","0"),NA,c.red))%>%
     left_join(dados_redis, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
-
 
   ###Proporções o	_inj (hom,sui,transp):
 
@@ -374,8 +345,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.5, na.rm = T))%>%
     ungroup() %>%
     group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    mutate(pr.mu=ob/sum(ob, na.rm = T),
+           ob.mu=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MICRO
@@ -385,8 +356,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.5, na.rm = T))%>%
     ungroup() %>%
     group_by(micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    mutate(pr.mi=ob/sum(ob, na.rm = T),
+           ob.mi=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MESO
@@ -396,8 +367,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.5, na.rm = T))%>%
     ungroup() %>%
     group_by(meso,idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    mutate(pr.me=ob/sum(ob, na.rm = T),
+           ob.me=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.UF
@@ -407,8 +378,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.5, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    mutate(pr.uf=ob/sum(ob, na.rm = T),
+           ob.uf=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.REG
@@ -418,8 +389,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.5, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    mutate(pr.rg=ob/sum(ob, na.rm = T),
+           ob.rg=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   base.5 <- base.5 %>%
@@ -430,7 +401,7 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     left_join(rg.inj.hst, by=c( 'GBD','idade', 'ano', 'sexo', 'reg'))
 
 
-  base.5 <- base.5 %>%
+   base.5 <- base.5 %>% 
     mutate(ihst.1=redis*pr.mu,
            redis.2=ifelse(is.na(ihst.1) & ob.mu==0, redis,NA),
            ihst.2=redis.2*pr.mi,
@@ -440,11 +411,11 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
            ihst.4=redis.4*pr.uf,
            redis.5=ifelse(is.na(ihst.4) & ob.uf==0, redis.4,NA),
            ihst.5=redis.5*pr.rg,
-           obitos.6= ifelse(!is.na(ihst.1), obitos.5+ihst.1,
-                            ifelse(!is.na(ihst.2), obitos.5+ihst.2,
-                                   ifelse(!is.na(ihst.3), obitos.5+ihst.3,
-                                          ifelse(!is.na(ihst.4), obitos.5+ihst.4,
-                                                 ifelse(!is.na(ihst.5), obitos.5+ihst.5, obitos.5))))))
+           obitos.6.0= ifelse(!is.na(ihst.1), obitos.5+ihst.1, 
+                              ifelse(!is.na(ihst.2), obitos.5+ihst.2,
+                                     ifelse(!is.na(ihst.3), obitos.5+ihst.3,
+                                            ifelse(!is.na(ihst.4), obitos.5+ihst.4,
+                                                   ifelse(!is.na(ihst.5), obitos.5+ihst.5, obitos.5))))))
 
   rm(inj.hst,me.inj.hst,mi.inj.hst,mu.inj.hst,rg.inj.hst,uf.inj.hst)
 
@@ -453,6 +424,210 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
   # obitos_pre_redis <- sum(base.5$obitos.5,na.rm = T)
   # round(sum(base.5$obitos.6,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   # round(sum(base.5$obitos.6,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
+
+  ########	_gc_inj_road:-----
+  
+  inj.road <-c("Injuries - Road - Buses and Heavy Vehicles","Injuries - Road - Cyclist",                          
+               "Injuries - Road - Four-Wheel Cars and Light Vechicles","Injuries - Road - Motocyclist",                        
+               "Injuries - Road - Other","Injuries - Road - Pedestrian")
+
+  base.5 <- base.5 %>% 
+    select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>% 
+    mutate(c.red=ifelse(GBD %in% inj.road, '_gc_inj_road', NA)) %>%
+    left_join(base.r, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
+
+  ###Proporções o	_gc_inj_road: 
+  
+  ###PRMUN
+  mu.inj.road <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_road')%>%
+    group_by(cdmun,micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.0, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mu=ob/sum(ob,na.rm=T),
+           ob.mu=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MICRO 
+  mi.inj.road <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_road')%>%
+    group_by(micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.0, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mi=ob/sum(ob,na.rm=T),
+           ob.mi=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MESO 
+  me.inj.road <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_road')%>%
+    group_by(meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.0, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.me=ob/sum(ob,na.rm=T),
+           ob.me=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.UF
+  uf.inj.road <- base.5 %>%
+    filter(c.red %in% '_gc_inj_road')%>%
+    group_by( GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.0, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, uf) %>% 
+    mutate(pr.uf=ob/sum(ob,na.rm=T),
+           ob.uf=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.REG
+  rg.inj.road <- base.5 %>%
+    filter(c.red %in% '_gc_inj_road')%>%
+    group_by( GBD,idade, ano, sexo, reg) %>% 
+    summarise(ob=sum(obitos.6.0, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, reg) %>% 
+    mutate(pr.rg=ob/sum(ob,na.rm=T),
+           ob.rg=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  base.5 <- base.5 %>% 
+    left_join(mu.inj.road, by=c('cdmun','micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(mi.inj.road, by=c('micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(me.inj.road, by=c('meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(uf.inj.road, by=c( 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(rg.inj.road, by=c( 'GBD','idade', 'ano', 'sexo', 'reg')) 
+  
+  
+  base.5 <- base.5 %>% 
+    mutate(iroad.1=redis*pr.mu,
+           redis.2=ifelse(is.na(iroad.1) & ob.mu==0, redis,NA),
+           iroad.2=redis.2*pr.mi,
+           redis.3=ifelse(is.na(iroad.2) & ob.mi==0, redis.2,NA),
+           iroad.3=redis.3*pr.me,
+           redis.4=ifelse(is.na(iroad.3) & ob.me==0, redis.3,NA),
+           iroad.4=redis.4*pr.uf,
+           redis.5=ifelse(is.na(iroad.4) & ob.uf==0, redis.4,NA),
+           iroad.5=redis.5*pr.rg,
+           obitos.6.1= ifelse(!is.na(iroad.1), obitos.6.0+iroad.1, 
+                              ifelse(!is.na(iroad.2), obitos.6.0+iroad.2,
+                                     ifelse(!is.na(iroad.3), obitos.6.0+iroad.3,
+                                            ifelse(!is.na(iroad.4), obitos.6.0+iroad.4,
+                                                   ifelse(!is.na(iroad.5), obitos.6.0+iroad.5, obitos.6.0))))))
+  
+  sum(base.5$obitos.6.1,na.rm=T)-sum(base.5$obitos.6.0,na.rm=T)
+  
+  #Validação
+  # obitos_para_redis <- sum(base.r[grepl('_gc_inj_road',base.r$c.red),]$redis, na.rm = T)
+  # obitos_pre_redis <- sum(base.5$obitos.6.0,na.rm = T)
+  # obitos_para_redis_road <- obitos_para_redis
+  # round(sum(base.5$obitos.6.1,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
+  
+  rm(inj.road,me.inj.road,mi.inj.road,mu.inj.road,rg.inj.road,uf.inj.road)
+  
+  ########	_gc_inj_transport:-----
+  
+  inj.transport <-c("Injuries - Other transport injuries","Injuries - Road - Buses and Heavy Vehicles","Injuries - Road - Cyclist",                          
+                    "Injuries - Road - Four-Wheel Cars and Light Vechicles","Injuries - Road - Motocyclist",                        
+                    "Injuries - Road - Other","Injuries - Road - Pedestrian")
+  
+  base.5 <- base.5 %>% 
+    select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>% 
+    mutate(c.red=ifelse(GBD %in% inj.transport, '_gc_inj_transport', NA)) %>%
+    left_join(base.r, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
+  
+  ###Proporções o	_gc_inj_transport: 
+  
+  ###PRMUN
+  mu.inj.transport <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_transport')%>%
+    group_by(cdmun,micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.1, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mu=ob/sum(ob,na.rm=T),
+           ob.mu=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MICRO 
+  mi.inj.transport <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_transport')%>%
+    group_by(micro,meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.1, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(micro,meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.mi=ob/sum(ob,na.rm=T),
+           ob.mi=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.MESO 
+  me.inj.transport <- base.5 %>% 
+    filter(c.red %in% '_gc_inj_transport')%>%
+    group_by(meso, GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.1, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(meso,idade, ano, sexo, uf) %>% 
+    mutate(pr.me=ob/sum(ob,na.rm=T),
+           ob.me=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.UF
+  uf.inj.transport <- base.5 %>%
+    filter(c.red %in% '_gc_inj_transport')%>%
+    group_by( GBD,idade, ano, sexo, uf) %>% 
+    summarise(ob=sum(obitos.6.1, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, uf) %>% 
+    mutate(pr.uf=ob/sum(ob,na.rm=T),
+           ob.uf=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  ###PR.REG
+  rg.inj.transport <- base.5 %>%
+    filter(c.red %in% '_gc_inj_transport')%>%
+    group_by( GBD,idade, ano, sexo, reg) %>% 
+    summarise(ob=sum(obitos.6.1, na.rm = T))%>% 
+    ungroup() %>% 
+    group_by(idade, ano, sexo, reg) %>% 
+    mutate(pr.rg=ob/sum(ob,na.rm=T),
+           ob.rg=sum(ob,na.rm=T)) %>% 
+    select(-ob)
+  
+  base.5 <- base.5 %>% 
+    left_join(mu.inj.transport, by=c('cdmun','micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(mi.inj.transport, by=c('micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(me.inj.transport, by=c('meso', 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(uf.inj.transport, by=c( 'GBD','idade', 'ano', 'sexo', 'uf')) %>% 
+    left_join(rg.inj.transport, by=c( 'GBD','idade', 'ano', 'sexo', 'reg')) 
+  
+  
+  base.5 <- base.5 %>% 
+    mutate(itransport.1=redis*pr.mu,
+           redis.2=ifelse(is.na(itransport.1) & ob.mu==0, redis,NA),
+           itransport.2=redis.2*pr.mi,
+           redis.3=ifelse(is.na(itransport.2) & ob.mi==0, redis.2,NA),
+           itransport.3=redis.3*pr.me,
+           redis.4=ifelse(is.na(itransport.3) & ob.me==0, redis.3,NA),
+           itransport.4=redis.4*pr.uf,
+           redis.5=ifelse(is.na(itransport.4) & ob.uf==0, redis.4,NA),
+           itransport.5=redis.5*pr.rg,
+           obitos.6= ifelse(!is.na(itransport.1), obitos.6.1+itransport.1, 
+                            ifelse(!is.na(itransport.2), obitos.6.1+itransport.2,
+                                   ifelse(!is.na(itransport.3), obitos.6.1+itransport.3,
+                                          ifelse(!is.na(itransport.4), obitos.6.1+itransport.4,
+                                                 ifelse(!is.na(itransport.5), obitos.6.1+itransport.5, obitos.6.1))))))
+  
+  
+  
+  sum(base.5$obitos.6,na.rm=T)-sum(base.5$obitos.6.1,na.rm=T)
+  obitos_para_redis <- sum(base.r[grepl('_gc_inj_transport',base.r$c.red),]$redis, na.rm = T)
+  obitos_pre_redis <- sum(base.5$obitos.6.1,na.rm = T)
+  round(sum(base.5$obitos.6,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
+  round(sum(base.5$obitos.6,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
+  
+  rm(inj.transport,me.inj.transport,mi.inj.transport,mu.inj.transport,rg.inj.transport,uf.inj.transport)
 
   ########	_inj(hom,suic,other):-----
 
@@ -464,7 +639,6 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     mutate(c.red=ifelse(GBD %in% "Injuries - Suicide" & idade %in% c("Early Neonatal","Post Neonatal","Late Neonatal","<1 year","0"),NA,c.red))%>%
     left_join(dados_redis, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
 
-
   ###Proporções _inj(hom,suic,other):
 
   ###PRMUN
@@ -474,8 +648,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.6, na.rm = T))%>%
     ungroup() %>%
     group_by(cdmun,micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mu=ob/sum(ob),
-           ob.mu=sum(ob)) %>%
+    mutate(pr.mu=ob/sum(ob, na.rm = T),
+           ob.mu=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MICRO
@@ -485,8 +659,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.6, na.rm = T))%>%
     ungroup() %>%
     group_by(micro,meso,idade, ano, sexo, uf) %>%
-    mutate(pr.mi=ob/sum(ob),
-           ob.mi=sum(ob)) %>%
+    mutate(pr.mi=ob/sum(ob, na.rm = T),
+           ob.mi=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.MESO
@@ -496,8 +670,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.6, na.rm = T))%>%
     ungroup() %>%
     group_by(meso,idade, ano, sexo, uf) %>%
-    mutate(pr.me=ob/sum(ob),
-           ob.me=sum(ob)) %>%
+    mutate(pr.me=ob/sum(ob, na.rm = T),
+           ob.me=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.UF
@@ -507,8 +681,8 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.6, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, uf) %>%
-    mutate(pr.uf=ob/sum(ob),
-           ob.uf=sum(ob)) %>%
+    mutate(pr.uf=ob/sum(ob, na.rm = T),
+           ob.uf=sum(ob, na.rm = T)) %>%
     select(-ob)
 
   ###PR.REG
@@ -518,10 +692,9 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     summarise(ob=sum(obitos.6, na.rm = T))%>%
     ungroup() %>%
     group_by(idade, ano, sexo, reg) %>%
-    mutate(pr.rg=ob/sum(ob),
-           ob.rg=sum(ob)) %>%
+    mutate(pr.rg=ob/sum(ob, na.rm = T),
+           ob.rg=sum(ob, na.rm = T)) %>%
     select(-ob)
-
 
   base.5 <- base.5 %>%
     left_join(mu.inj.hso, by=c('cdmun','micro','meso', 'GBD','idade', 'ano', 'sexo', 'uf'))
@@ -533,7 +706,6 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
     left_join(uf.inj.hso, by=c( 'GBD','idade', 'ano', 'sexo', 'uf'))
   base.5 <- base.5%>%
     left_join(rg.inj.hso, by=c( 'GBD','idade', 'ano', 'sexo', 'reg'))
-
 
   base.5 <- base.5 %>%
     mutate(ihso.1=redis*pr.mu,

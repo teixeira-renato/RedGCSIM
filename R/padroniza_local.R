@@ -21,9 +21,12 @@
 padroniza_local = function(x){
   ###Criação da Variável ano e cdmun com 6 dígitos
   out.file <- x %>%
-    mutate(ano=str_sub(DTOBITO,5,8),
-           cdmun=str_sub(CODMUNRES,end=6))
-
+    mutate(idade.cat=ifelse(grepl("^\\d{1}",perl = T,.$age),
+                          age.cat(as.numeric(str_sub(age, end = -6))),.$age),
+           ano=str_sub(DTOBITO,5,8),
+           cdmun=str_sub(CODMUNRES,end=6)) %>%
+    mutate(idade.cat=ifelse(idade.cat ==999|is.na(idade.cat),'IGN',idade.cat))
+  
   print(table(out.file$ano, exclude = NULL)) # Total de registros no SIM
 
   base <- out.file %>%
