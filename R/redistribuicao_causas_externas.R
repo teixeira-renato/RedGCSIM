@@ -29,7 +29,7 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
   if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
   pacman::p_load(tidyverse) # pacotes necessários
 
-  causas=unique(ICD$target)[!grepl(pattern = "^_",x = unique(ICD$target))]
+  causas=unique(ICD$CLASS_GPEAS_PRODUCAO)[!grepl(pattern = "^_",x = unique(ICD$CLASS_GPEAS_PRODUCAO))]
   causas=c(causas,"_pneumo")
 
   ##### Injuries  -----
