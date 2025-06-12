@@ -56,7 +56,7 @@ tabela_final_1 = function(x){
 
   ###Base por idade, sexo e etc.
   base.2 <- base %>%
-    group_by(cdmun,microcode, mesocode,  SEXO, idade.cat, ano, cod_class) %>%
+    group_by(cdmun,microcode, mesocode,  SEXO, idade.cat, ano, CLASS_GPEAS_PRODUCAO) %>%
     summarise(ob=n())
 
   #Marca registro sem idade definida
