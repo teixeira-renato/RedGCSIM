@@ -123,7 +123,7 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
 
   #Validação
 
-  # obitos_para_redis <- sum(base.r[grepl("_injuries",base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl("_injuries",dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.2,na.rm = T)
   # round(sum(base.5$obitos.3,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   # round(sum(base.5$obitos.3,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
@@ -223,7 +223,7 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
   rm(inj.hom.sui,me.inj.h.s,mi.inj.h.s,mu.inj.h.s,rg.inj.h.s,uf.inj.h.s)
 
   #Validação
-  # obitos_para_redis <- sum(base.r[grepl('_inj (hom,sui)',base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl('_inj (hom,sui)',dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.3,na.rm = T)
   # round(sum(base.5$obitos.4,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
 
@@ -319,7 +319,7 @@ redistribuicao_causas_externas = function (dados_completos,dados_redis){
 
   rm(inj.hsf,me.inj.hsf,mi.inj.hsf,mu.inj.hsf,rg.inj.hsf,uf.inj.hsf)
   #Validação
-  # obitos_para_redis <- sum(base.r[grepl('(hom,suic, fall,road)',base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl('(hom,suic, fall,road)',dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.4,na.rm = T)
   # round(sum(base.5$obitos.5,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   # round(sum(base.5$obitos.5,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
@@ -420,7 +420,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
   rm(inj.hst,me.inj.hst,mi.inj.hst,mu.inj.hst,rg.inj.hst,uf.inj.hst)
 
   #Validação
-  # obitos_para_redis <- sum(base.r[grepl('(hom,sui,transp)',base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl('(hom,sui,transp)',dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.5,na.rm = T)
   # round(sum(base.5$obitos.6,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   # round(sum(base.5$obitos.6,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
@@ -434,7 +434,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
   base.5 <- base.5 %>% 
     select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>% 
     mutate(c.red=ifelse(GBD %in% inj.road, '_gc_inj_road', NA)) %>%
-    left_join(base.r, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
+    left_join(dados_redis, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
 
   ###Proporções o	_gc_inj_road: 
   
@@ -520,7 +520,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
   sum(base.5$obitos.6.1,na.rm=T)-sum(base.5$obitos.6.0,na.rm=T)
   
   #Validação
-  # obitos_para_redis <- sum(base.r[grepl('_gc_inj_road',base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl('_gc_inj_road',dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.6.0,na.rm = T)
   # obitos_para_redis_road <- obitos_para_redis
   # round(sum(base.5$obitos.6.1,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
@@ -536,7 +536,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
   base.5 <- base.5 %>% 
     select(!(pr.mu:ob.rg),-redis,-redis.2, -redis.3,-redis.4, -redis.5,-c.red) %>% 
     mutate(c.red=ifelse(GBD %in% inj.transport, '_gc_inj_transport', NA)) %>%
-    left_join(base.r, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
+    left_join(dados_redis, by=c('cdmun','micro','meso',  'ano', 'sexo','idade', 'uf', 'c.red'))
   
   ###Proporções o	_gc_inj_transport: 
   
@@ -622,7 +622,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
   
   
   sum(base.5$obitos.6,na.rm=T)-sum(base.5$obitos.6.1,na.rm=T)
-  obitos_para_redis <- sum(base.r[grepl('_gc_inj_transport',base.r$c.red),]$redis, na.rm = T)
+  obitos_para_redis <- sum(dados_redis[grepl('_gc_inj_transport',dados_redis$c.red),]$redis, na.rm = T)
   obitos_pre_redis <- sum(base.5$obitos.6.1,na.rm = T)
   round(sum(base.5$obitos.6,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   round(sum(base.5$obitos.6,na.rm = T))-round(sum(obitos_para_redis,obitos_pre_redis))
@@ -725,7 +725,7 @@ inj.hst <-c("Injuries - Suicide", "Injuries - Homicide", "Injuries - Other trans
 
   rm(inj.hso,me.inj.hso,mi.inj.hso,mu.inj.hso,rg.inj.hso,uf.inj.hso)
   #Validação
-  # obitos_para_redis <- sum(base.r[grepl('(hom,suic,other)',base.r$c.red),]$redis, na.rm = T)
+  # obitos_para_redis <- sum(dados_redis[grepl('(hom,suic,other)',dados_redis$c.red),]$redis, na.rm = T)
   # obitos_pre_redis <- sum(base.5$obitos.6,na.rm = T)
   # round(sum(base.5$obitos.7,na.rm = T))==round(sum(obitos_para_redis,obitos_pre_redis))
   #
