@@ -45,7 +45,8 @@ padroniza_idade = function(x){
     mutate(age=IDADE_ANOS)%>%
     mutate(age= recode(age, 'MENOR 1 ANO IGN'='Post Neonatal', '0 A 6 DIAS'='Early Neonatal', '7 A 27 DIAS'= 'Late Neonatal','28 A 364 DIAS'='Post Neonatal', '1 ANO'='1 ANOS'))%>%
     mutate(idade.cat=ifelse(grepl("^\\d{1}",perl = T,.$age),
-                            age.cat(as.numeric(str_sub(age, end = -6))),.$age))
+                            age.cat(as.numeric(str_sub(age, end = -6))),.$age))%>%
+    mutate(idade.cat=ifelse(idade.cat ==999|is.na(idade.cat),'IGN',idade.cat))
 
    return(out.file)
 }
