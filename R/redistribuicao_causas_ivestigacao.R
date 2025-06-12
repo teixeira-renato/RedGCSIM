@@ -398,7 +398,6 @@ redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos)
   
   
   base.5 <- base.5 %>%
-    select(-weight) %>% 
     left_join(ICD_y34,by=c("GBD"="target"))%>%
     mutate(redis=ifelse(!is.na(weight),redis*weight,redis))%>%
     mutate(y34.1=ifelse(GBD %in% c(inj,dcnt),redis,redis*pr.mu),
