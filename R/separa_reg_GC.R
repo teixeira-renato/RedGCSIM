@@ -59,9 +59,11 @@ redis=unique(ICD$CLASS_GPEAS_PRODUCAO)[grepl(pattern = "^_",x = unique(ICD$CLASS
 
   #Base sem dados de Covid
 
-  base_covid <- dados_sem_ign %>% 
-    select(cdmun:pop,obitos,obitos.2) %>% 
+  base_covid <- dados_sem_ign %>%
+    select(cdmun:pop,obitos,obitos.2) %>%
     filter(GBD == "covid_19")
+
+  assign("base_covid", base_covid, envir = .GlobalEnv)
 
   #Base com o GC
   base.r <- dados_sem_ign  %>%
@@ -122,5 +124,4 @@ redis=unique(ICD$CLASS_GPEAS_PRODUCAO)[grepl(pattern = "^_",x = unique(ICD$CLASS
   out.file <- list(redistribuir=base.r,completos=base.5)
 
   return(out.file)
-  return(base_covid)
 }
