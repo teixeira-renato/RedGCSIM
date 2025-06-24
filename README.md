@@ -53,7 +53,7 @@ Abaixo estão os passos recomendados para usar o pacote e aplicar o algoritmo:
     Aplique `redistribuicao_causas_mat_inf(dados_completos = out.df10, dados_redis = outdf9file9[["redistribuir"]])` para redistribuir causas relacionadas a óbitos maternos e infecciosos.
 
 12. **Redistribuir causas investigadas:**
-    Use `redistribuicao_causas_ivestigacao(dados_completos = df11, dados_redis = df9[["redistribuir"]], pesos = paste0(path, "/ICD_MAPPING_V6_2023 pos OPAS_nov2023.xlsx"))` para redistribuir óbitos baseados em investigações específicas.
+    Use `redistribuicao_causas_ivestigacao(dados_completos = df11, dados_redis = df9[["redistribuir"]])` para redistribuir óbitos baseados em investigações específicas.
 
 ---
 
