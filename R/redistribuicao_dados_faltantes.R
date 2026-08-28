@@ -9,10 +9,14 @@
 #'                  `sexo`, `cdmun`, e informações de óbitos.
 #' @return Um data frame com os dados redistribuídos, incluindo colunas adicionais para diferentes níveis de redistribuição
 #'         (por idade, sexo, município e combinações).
+#'
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
+#'
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso com dados fictícios
-#' base_prop <- data.frame(
 #'   cdmun = c("110001", "120001"),
 #'   idade = c("30", "25"),
 #'   sexo = c("Masculino", "Feminino"),
@@ -33,8 +37,7 @@
 #' @export
 
 redistribuicao_dados_faltantes = function(base_prop,dados_ign){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse) # pacotes necessários
+
 
   `%notin%` <- Negate(`%in%`)
 

@@ -21,7 +21,6 @@ Deve-se inserir aspas nos dois parâmetros.
 }
 \examples{
 \dontrun{
-# Exemplo de uso:
 caminho <- "caminho/para/seus/arquivos"
 padrao <- "\\\\.csv$"
 dados <- Coletor_dados(caminho, padrao)

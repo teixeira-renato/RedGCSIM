@@ -1,68 +1,156 @@
-# Algoritmo de Redistribuição de Causas Garbage para os Dados do SIM
+# RedGCSIM: Algoritmo de Redistribuição de Causas Garbage nos Dados do SIM
 
 **Versão: 01.2024a**
 
-Este repositório foi criado para compartilhar informações metodológicas e técnicas relacionadas ao processo de redistribuição de causas garbage no Brasil. Este trabalho é desenvolvido pelo **Grupo de Pesquisas em Epidemiologia e Avaliação em Saúde (GPEAS)** da Faculdade de Medicina da Universidade Federal de Minas Gerais (UFMG), sob a coordenação da Profa. **Deborah Malta**.
+Este pacote implementa um algoritmo para redistribuição de causas garbage nos dados do Sistema de Informações sobre Mortalidade (SIM) no Brasil. Desenvolvido pelo **Grupo de Pesquisas em Epidemiologia e Avaliação em Saúde (GPEAS)** da Faculdade de Medicina da UFMG, sob coordenação da Profa. **Deborah Malta**.
 
-Este algoritmo está em constante desenvolvimento, e novas versões serão disponibilizadas no repositório. Sugestões e contribuições são bem-vindas e podem ser enviadas ao pesquisador responsável Renato Teixeira  **renato115@yahoo.com**.
-
-### **Sobre o Pacote**
-Atualmente, estamos desenvolvendo um pacote em R que tem como objetivo facilitar a aplicação do algoritmo de redistribuição. Atualizações frequentes serão realizadas para aprimorar sua funcionalidade e atender às necessidades dos usuários.
-
-Sua contribuição para melhorias, identificação de erros ou novas funcionalidades será muito valiosa.
+> ⚠️ Este pacote está em **desenvolvimento ativo**. Contribuições, sugestões e correções são bem-vindas!  
+> ✉️ Contato: **Renato Teixeira** – [renato115@yahoo.com](mailto:renato115@yahoo.com)
 
 ---
 
-## **Guia de Uso do Pacote**
+## 💾 Destaques metodológicos
 
-Abaixo estão os passos recomendados para usar o pacote e aplicar o algoritmo:
+Os dados ignorados são redistribuídos segundo local (município), ano, sexo, idade e causa básica.
 
-### **Passos**
+A causa básica de óbito do SIM, que utiliza a CID-10, foi categorizada por uma tabulação inspirada no estudo GBD 2017. Entretanto, alterações foram feitas e amesma conta no data frame ICD. 
 
-1. **Carregar a base de dados:**
-   Inicie carregando os dados do SIM em um data frame (por exemplo, `df`).
+Foram utilizados dois métodos para criação dos pesos de redistirbuição:
+-Proporcional;
+-Investigação de óbitos (Y34, X59 e pneumonias).
 
-2. **Padronizar as idades:**
-   Use a função `padroniza_idade(x = df)` para ajustar as idades no formato esperado pelo pacote.
 
-3. **Padronizar informações de localidade:**
-   Utilize `padroniza_local(df2)` para adicionar informações de municípios, mesorregiões e macrorregiões.
 
-4. **Criar a tabela inicial:**
-   Execute `tabela_final_1(df3)` para gerar um data frame contendo as variáveis formatadas de acordo com os padrões do pacote.
+## 📦 Instalação
 
-5. **Separar registros ignorados:**
-   A função `separa_reg_ing(df4)` separa os dados em duas categorias: registros completos e registros com informações ignoradas.
+Você pode instalar a versão de desenvolvimento diretamente do GitHub:
 
-6. **Preparar a base generalizada:**
-   Com `prepara_base_generalizada(df5[["completos"]])`, crie a base necessária para gerar os pesos para redistribuição.
+```r
+# Instale os pacotes necessários para instalar do GitHub
+install.packages("devtools")
 
-7. **Gerar proporções:**
-   Aplique a função `prop_causas(df6)` para calcular proporções entre as diferentes causas.
-
-8. **Redistribuir dados faltantes:**
-   Use `redistribuicao_dados_faltantes(base_prop = df7, dados_ign = df5[["ignorados"]])` para redistribuir registros com informações faltantes de sexo, idade e município.
-
-9. **Separar causas garbage:**
-   A função `separa_reg_GC(df8)` gera os pacotes para redistribuição de causas garbage baseados na versão atual do algoritmo.
-
-10. **Redistribuir causas externas:**
-    Use `redistribuicao_causas_externas(dados_completos = df9[["completos"]], dados_redis = df9[["redistribuir"]])` para iniciar a redistribuição de causas externas.
-
-11. **Redistribuir causas maternas e infecciosas:**
-    Aplique `redistribuicao_causas_mat_inf(dados_completos = out.df10, dados_redis = outdf9file9[["redistribuir"]])` para redistribuir causas relacionadas a óbitos maternos e infecciosos.
-
-12. **Redistribuir causas investigadas:**
-    Use `redistribuicao_causas_ivestigacao(dados_completos = df11, dados_redis = df9[["redistribuir"]])` para redistribuir óbitos baseados em investigações específicas.
+# Instale o RedGCSIM
+devtools::install_github("teixeira-renato/RedGCSIM")
+```
 
 ---
 
-## **Contribuições**
-Se você deseja contribuir com o projeto, tenha dúvidas ou mais informações, entre em contato com:
+## 🚀 Começando
 
-- Envie sugestões ou relatórios de bugs para **renato115@yahoo.com**.
-- Participe do desenvolvimento através de pull requests neste repositório.
+Carregue o pacote após a instalação:
 
-Agradecemos seu interesse e colaboração!
+```r
+library(RedGCSIM)
+```
+
+Prepare sua base de dados do SIM (`.dbc` ou `.csv`) e siga os passos abaixo para aplicar o algoritmo.
+
+---
+
+## 🔁 Fluxo de Uso – Passo a Passo
+
+Abaixo está o fluxo recomendado para utilizar o pacote:
+
+### 1. **Importar os dados**
+```r
+dados <- rio::import("SIM_arquivo.csv")
+```
+
+### 2. **Padronizar idade**
+```r
+dados_idade <- padroniza_idade(dados)
+```
+
+### 3. **Padronizar localidade**
+```r
+dados_local <- padroniza_local(dados_idade)
+```
+
+### 4. **Gerar tabela inicial**
+```r
+tabela_inicial <- tabela_final_1(dados_local)
+```
+
+### 5. **Separar registros ignorados**
+```r
+dados_sep <- separa_reg_ing(tabela_inicial)
+```
+
+### 6. **Preparar base generalizada**
+```r
+base_generalizada <- prepara_base_generalizada(dados_sep[["completos"]])
+```
+
+### 7. **Calcular proporções**
+```r
+proporcoes <- prop_causas(base_generalizada)
+```
+
+### 8. **Redistribuir dados faltantes (sexo, idade, município)**
+```r
+dados_faltantes_redistribuidos <- redistribuicao_dados_faltantes(
+  base_prop = proporcoes,
+  dados_ign = dados_sep[["ignorados"]]
+)
+```
+
+### 9. **Separar causas garbage**
+```r
+dados_gc <- separa_reg_GC(dados_faltantes_redistribuidos)
+```
+
+### 10. **Redistribuir causas externas**
+```r
+completo_externas <- redistribuicao_causas_externas(
+  dados_completos = dados_gc[["completos"]],
+  dados_redis = dados_gc[["redistribuir"]]
+)
+```
+
+### 11. **Redistribuir causas maternas e infecciosas**
+```r
+dados_mat_inf <- redistribuicao_causas_mat_inf(
+  dados_completos = completo_externas,
+  dados_redis = dados_gc[["redistribuir"]]
+)
+```
+
+### 12. **Redistribuir causas sob investigação**
+```r
+final <- redistribuicao_causas_ivestigacao(
+  dados_completos = dados_mat_inf,
+  dados_redis = dados_gc[["redistribuir"]]
+)
+```
+
+---
+
+## 🧰 Funções Principais
+
+| Função                                 | Descrição                                                                 |
+|----------------------------------------|---------------------------------------------------------------------------|
+| `padroniza_idade()`                    | Reclassifica faixas etárias para análise                                 |
+| `padroniza_local()`                    | Gera colunas padronizadas de município e ano                             |
+| `tabela_final_1()`                     | Organiza variáveis para redistribuição                                   |
+| `separa_reg_ing()`                    | Separa registros com sexo/idade/município ignorados                      |
+| `prepara_base_generalizada()`         | Cria base de referência com totais por grupo populacional                |
+| `prop_causas()`                        | Calcula proporções por causa                                             |
+| `redistribuicao_dados_faltantes()`    | Redistribui registros com dados ignorados                                |
+| `separa_reg_GC()`                      | Identifica causas garbage                                                |
+| `redistribuicao_causas_externas()`    | Redistribui causas externas específicas                                  |
+| `redistribuicao_causas_mat_inf()`     | Redistribui causas maternas e infecciosas                                |
+| `redistribuicao_causas_ivestigacao()` | Redistribui causas investigadas por equipes locais                       |
+
+---
+
+## 🤝 Contribuindo
+
+Sinta-se à vontade para:
+
+- Relatar bugs ou problemas
+- Sugerir novas funcionalidades
+
+**Contato:** [renato115@yahoo.com](mailto:renato115@yahoo.com)  
+**Repositório:** [github.com/teixeira-renato/RedGCSIM](https://github.com/teixeira-renato/RedGCSIM)
 
 ---

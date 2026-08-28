@@ -7,13 +7,9 @@
 #' @param caminho O caminho para o diretório contendo os arquivos.
 #' @param padrao Um padrão de expressão regular para selecionar os arquivos.
 #' @return Um data frame combinado de todos os arquivos que correspondem ao padrão.
-#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
-#' @importFrom stringr str_pad str_sub
-#' @importFrom magrittr %>%
-#' @importFrom rio import
-#'
 #' @examples
 #' \dontrun{
+#' # Exemplo de uso:
 #' caminho <- "caminho/para/seus/arquivos"
 #' padrao <- "\\.csv$"
 #' dados <- Coletor_dados(caminho, padrao)
@@ -22,6 +18,8 @@
 
 
 Coletor_dados=function(caminho,padrao){
+  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
+  pacman::p_load(dplyr,rio) # pacotes necessários
 
   out.file <- data.frame()
   gc();gc();gc()

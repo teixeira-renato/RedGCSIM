@@ -23,7 +23,6 @@ utilizando critérios específicos baseados em proporções calculadas.
 }
 \examples{
 \dontrun{
-# Dados fictícios
 dados_completos <- data.frame(
   cdmun = c("110001", "120001"),
   idade = c("25", "30"),

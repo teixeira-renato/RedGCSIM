@@ -11,6 +11,7 @@ prop_causas(dados)
 }
 \value{
 Data frame com as proporções calculadas para cada causa.
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
 }
 \description{
 Esta função calcula as proporções de causas de óbito nos dados fornecidos.

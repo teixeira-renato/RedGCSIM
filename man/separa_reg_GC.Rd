@@ -23,7 +23,6 @@ separando os registros de Garbage Code (GC) e preparando uma base completa para 
 }
 \examples{
 \dontrun{
-# Exemplo de uso com dados fictícios
 dados_sem_ign <- data.frame(
   cdmun = c("110001", "120001"),
   GBD = c("_injuries", "Injuries - Falls"),

@@ -4,9 +4,12 @@
 #'
 #' @param x Um data frame contendo dados a serem padronizados.
 #' @return Um data frame com as colunas `cdmun`, `SEXO`, `CAUSABAS`, `age`, `idade.cat` e `ano`.
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso:
 #' dados <- data.frame(DTOBITO = c("20230615", "20221230"),
 #'                     CODMUNRES = c("1234567", "2345678"),
 #'                     SEXO = c("M", "F"),
@@ -22,8 +25,8 @@ padroniza_local = function(x){
   ###Criação da Variável ano e cdmun com 6 dígitos
   out.file <- x %>%
     mutate(ano=str_sub(DTOBITO,5,8),
-           cdmun=str_sub(CODMUNRES,end=6)) 
-  
+           cdmun=str_sub(CODMUNRES,end=6))
+
   print(table(out.file$ano, exclude = NULL)) # Total de registros no SIM
 
   base <- out.file %>%

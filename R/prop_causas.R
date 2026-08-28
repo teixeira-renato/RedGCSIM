@@ -4,6 +4,10 @@
 #'
 #' @param dados Data frame contendo os dados de óbitos com as colunas necessárias.
 #' @return Data frame com as proporções calculadas para cada causa.
+#' #' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
 #' @examples
 #' \dontrun{
 #' dados <- data.frame(

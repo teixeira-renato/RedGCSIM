@@ -15,9 +15,14 @@
 #'   \item `obitos`: Número de óbitos agregados.
 #'   \item `uf`: Unidade Federativa correspondente ao município.
 #' }
+#'
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
+#'
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso:
 #' dados <- data.frame(
 #'   CAUSABAS = c("A01", "B02"),
 #'   SEXO = c("1", "2"),
@@ -34,8 +39,6 @@
 
 
 tabela_final_1 = function(x){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse,rio) # pacotes necessários
 
   ###Arquivo com as categoria das causas e os CID
   causas <- RedGCSIM::ICD

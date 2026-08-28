@@ -7,9 +7,13 @@
 #' @param dados_redis Data frame contendo as causas garbage a serem redistribuídas, com as colunas necessárias para a redistribuição.
 #' @param pesos Data frame com os pesos de redistribuição associados às causas garbage e suas respectivas categorias.
 #' @return Um data frame com os dados redistribuídos, incluindo as novas colunas de redistribuição (`obitos.10`, `obitos.11`, `obitos.12`, etc.) e validações.
+#'
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
 #' @examples
 #' \dontrun{
-#' # Dados fictícios
 #' dados_completos <- data.frame(
 #'   cdmun = c("110001", "120001"),
 #'   idade = c("30", "25"),
@@ -41,8 +45,7 @@
 
 
 redistribuicao_causas_ivestigacao = function (dados_completos,dados_redis,pesos){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse,rio) # pacotes necessários
+
 
   ICD_pesos <- RedGCSIM::ICD_pesos
 

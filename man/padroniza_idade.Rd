@@ -17,7 +17,6 @@ Esta função padroniza as idades no formato padrão do SIM em faixas etárias q
 }
 \examples{
 \dontrun{
-# Exemplo de uso:
 dados <- data.frame(IDADE = c("001", "002", "090", NA))
 dados_padronizados <- padroniza_idade(dados)
 }

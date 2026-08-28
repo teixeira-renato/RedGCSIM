@@ -9,9 +9,14 @@
 #'   \item `ignorados`: Data frame com registros que possuem campos ignorados (município inválido, sexo ou idade ausente).
 #'   \item `completos`: Data frame com registros válidos, sem campos ignorados.
 #' }
+#'
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
+#'
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso com dados fictícios
 #' dados <- data.frame(
 #'   cdmun = c("110001", "120001", "999999"),
 #'   idade = c(30, 999, "IGN"),
@@ -26,8 +31,6 @@
 #' @export
 
 separa_reg_ing = function(x){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse) # pacotes necessári
   `%notin%` <- Negate(`%in%`)
 
   #Códigos para municípios ignorados

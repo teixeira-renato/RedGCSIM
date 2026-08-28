@@ -23,8 +23,6 @@ do SIM, utilizando proporções pré-calculadas para completar os valores ausent
 }
 \examples{
 \dontrun{
-# Exemplo de uso com dados fictícios
-base_prop <- data.frame(
   cdmun = c("110001", "120001"),
   idade = c("30", "25"),
   sexo = c("Masculino", "Feminino"),

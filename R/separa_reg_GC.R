@@ -10,9 +10,14 @@
 #'   \item `redistribuir`: Data frame contendo os registros de Garbage Code (GC) a serem redistribuídos.
 #'   \item `completos`: Data frame com todos os registros, incluindo os dados processados sem GC.
 #' }
+#'
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
+#'
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso com dados fictícios
 #' dados_sem_ign <- data.frame(
 #'   cdmun = c("110001", "120001"),
 #'   GBD = c("_injuries", "Injuries - Falls"),
@@ -28,8 +33,7 @@
 #' @export
 
 separa_reg_GC = function (dados_sem_ign){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse,rio) # pacotes necessários
+
 
   # Definição de causas targets e códigos garbage para redistribuir
 

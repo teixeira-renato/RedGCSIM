@@ -22,7 +22,6 @@ Os registros ignorados incluem casos onde o município (\code{cdmun}), sexo ou i
 }
 \examples{
 \dontrun{
-# Exemplo de uso com dados fictícios
 dados <- data.frame(
   cdmun = c("110001", "120001", "999999"),
   idade = c(30, 999, "IGN"),

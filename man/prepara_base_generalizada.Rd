@@ -25,7 +25,6 @@ gerando uma base generalizada com dados populacionais agregados e ajustados.
 }
 \examples{
 \dontrun{
-# Exemplo de uso com dados fictícios
 base_dados_completos <- data.frame(
   cdmun = c("110001", "120001"),
   GBD = c("Injuries - Falls", "materna_hemorragia"),

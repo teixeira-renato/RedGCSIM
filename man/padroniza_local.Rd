@@ -17,7 +17,6 @@ Esta função padroniza informações de local e ano em um conjunto de dados.
 }
 \examples{
 \dontrun{
-# Exemplo de uso:
 dados <- data.frame(DTOBITO = c("20230615", "20221230"),
                     CODMUNRES = c("1234567", "2345678"),
                     SEXO = c("M", "F"),

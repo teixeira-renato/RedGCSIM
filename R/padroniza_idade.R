@@ -4,17 +4,18 @@
 #'
 #' @param x Um data frame contendo dados a serem padronizados.
 #' @return Um data frame com idades padronizadas.
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso:
 #' dados <- data.frame(IDADE = c("001", "002", "090", NA))
 #' dados_padronizados <- padroniza_idade(dados)
 #' }
 #' @export
 
 padroniza_idade = function(x){
-  if (!require("pacman")) install.packages("pacman") #garantir que o pacman está instalado
-  pacman::p_load(tidyverse,rio) # pacotes necessários
 
   ###Função para criar os grupos de idades
   age.cat = function(age){

@@ -12,9 +12,13 @@
 #'   \item Agregação de informações populacionais.
 #'   \item Dados com estrutura completa para redistribuição de causas garbage.
 #' }
+#' @importFrom dplyr mutate select left_join recode bind_rows group_by summarise
+#' @importFrom stringr str_pad str_sub
+#' @importFrom magrittr %>%
+#' @importFrom rio import
+#'
 #' @examples
 #' \dontrun{
-#' # Exemplo de uso com dados fictícios
 #' base_dados_completos <- data.frame(
 #'   cdmun = c("110001", "120001"),
 #'   GBD = c("Injuries - Falls", "materna_hemorragia"),
@@ -35,7 +39,7 @@
     pacman::p_load(tidyverse,rio) # pacotes necessários
 
   # Causas target
-    
+
   causas=unique(ICD$CLASS_GPEAS_PRODUCAO)[!grepl(pattern = "^_",x = unique(ICD$CLASS_GPEAS_PRODUCAO))]
   causas=c(causas,"_pneumo")
 

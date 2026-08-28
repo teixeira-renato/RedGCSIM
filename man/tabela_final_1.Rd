@@ -28,7 +28,6 @@ Esta função processa os dados do Sistema de Informações sobre Mortalidade (S
 }
 \examples{
 \dontrun{
-# Exemplo de uso:
 dados <- data.frame(
   CAUSABAS = c("A01", "B02"),
   SEXO = c("1", "2"),

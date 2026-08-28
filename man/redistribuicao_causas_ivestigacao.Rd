@@ -22,7 +22,6 @@ utilizando critérios específicos baseados em pesos e categorias predefinidas.
 }
 \examples{
 \dontrun{
-# Dados fictícios
 dados_completos <- data.frame(
   cdmun = c("110001", "120001"),
   idade = c("30", "25"),
